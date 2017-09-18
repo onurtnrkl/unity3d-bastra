@@ -22,13 +22,20 @@ public class PileController : MonoBehaviour
 
         pileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
         firstPileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
+
+        pile = new Pile();
     }
 
-    public void AddCard(Card card)
+    public void PlaceCard(Card card)
     {
         string name = card.ToString();
         Sprite sprite = SpriteManager.Instance.GetSprite(name);
 
         pileView.SetSprite(sprite);
+
+        pile.AddCard(card);
+        byte score = pile.GetScore();
+        //Debug.Log("Pile Score: " + score);
+        Debug.Log(pile);
     }
 }

@@ -19,6 +19,14 @@ public struct Card
         Rank = rank;
     }
 
+    public byte GetScore()
+    {
+        if (Rank == Rank.A || Rank == Rank.J) return 1;
+        else if (Suit == Suit.Clubs && Rank == Rank.Two) return 2;
+        else if (Suit == Suit.Diamonds && Rank == Rank.Ten) return 3;
+        else return 0;
+    }
+
     public override string ToString()
     {
         string suit = Suit.ToString();

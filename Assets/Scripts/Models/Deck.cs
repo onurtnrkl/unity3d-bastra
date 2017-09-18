@@ -41,7 +41,6 @@ public sealed class Deck
             {
                 Card card = new Card((Suit)suit, (Rank)rank);
                 cards.Add(card);
-                Debug.LogFormat("{0} added to deck.", card);
             }
         }
     }
@@ -54,10 +53,10 @@ public sealed class Deck
         Random random = new Random();
         cards = cards.OrderBy(x => random.Next()).ToList();
 
-        for (byte i = 0; i < cards.Count; i++)
-        {
-            Debug.Log(cards[i]);
-        }
+        //for (byte i = 0; i < cards.Count; i++)
+        //{
+        //    Debug.Log(cards[i]);
+        //}
     }
 
     public Card DrawCard()

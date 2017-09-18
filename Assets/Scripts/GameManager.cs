@@ -54,10 +54,10 @@ public sealed class GameManager : MonoBehaviour
         round++;
         move = 0;
 
-        PileController.AddCard(deck.DrawCard());
-        PileController.AddCard(deck.DrawCard());
-        PileController.AddCard(deck.DrawCard());
-        PileController.AddCard(deck.DrawCard());
+        PileController.PlaceCard(deck.DrawCard());
+        PileController.PlaceCard(deck.DrawCard());
+        PileController.PlaceCard(deck.DrawCard());
+        PileController.PlaceCard(deck.DrawCard());
     }
 
     public void PrintLog()

@@ -9,6 +9,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 #endregion
 
 using System.Collections.Generic;
+using System.Text;
 
 public sealed class Pile
 {
@@ -32,5 +33,38 @@ public sealed class Pile
         cards.Clear();
 
         return takenCards;
+    }
+
+    public byte GetScore()
+    {
+        byte score = 0;
+
+        byte length = (byte)cards.Count;
+
+        for (byte i = 0; i < length; i++)
+        {
+            Card card = cards[i];
+            score += card.GetScore();
+        }
+
+        return score;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        byte length = (byte)cards.Count;
+
+        for (byte i = 0; i < length; i++)
+        {
+            Card card = cards[i];
+            string name = card.ToString();
+
+            stringBuilder.Append(name);
+            stringBuilder.Append(" | ");
+        }
+
+        return stringBuilder.ToString();
     }
 }
