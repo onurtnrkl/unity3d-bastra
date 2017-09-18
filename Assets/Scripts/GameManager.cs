@@ -44,4 +44,12 @@ public sealed class GameManager : MonoBehaviour
         deck.DrawCard();
         deck.DrawCard();
     }
+
+    public void PrintLog()
+    {
+        //Round 1, Move 1
+        //Pile_Cards = x | x | x | x
+        //Player_Hand = = x | x | x | x
+        //Computer_Hand = = x | x | x | x
+    }
 }
