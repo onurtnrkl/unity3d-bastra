@@ -24,10 +24,10 @@ public class PileController : MonoBehaviour
         firstPileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
     }
 
-    public void AddCard()
+    public void AddCard(Card card)
     {
-        Card card = new Card(Suit.Clubs, Rank.A);
-        Sprite sprite = SpriteManager.Instance.GetSprite(card.ToString());
+        string name = card.ToString();
+        Sprite sprite = SpriteManager.Instance.GetSprite(name);
 
         pileView.SetSprite(sprite);
     }

@@ -45,12 +45,19 @@ public sealed class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        PileController.AddCard();
+        StartRound();
     }
 
     private void StartRound()
     {
         deck = new Deck();
+        round++;
+        move = 0;
+
+        PileController.AddCard(deck.DrawCard());
+        PileController.AddCard(deck.DrawCard());
+        PileController.AddCard(deck.DrawCard());
+        PileController.AddCard(deck.DrawCard());
     }
 
     public void PrintLog()
