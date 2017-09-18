@@ -8,14 +8,22 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-public sealed class Card
+public struct Card
 {
-    public Rank Rank { get; private set; }
     public Suit Suit { get; private set; }
+    public Rank Rank { get; private set; }
 
-    public Card(Rank rank, Suit suit)
+    public Card(Suit suit, Rank rank)
     {
-        Rank = rank;
         Suit = suit;
+        Rank = rank;
+    }
+
+    public override string ToString()
+    {
+        string suit = Suit.ToString();
+        string rank = Rank.ToString();
+
+        return string.Format("{0}_{1}", suit, rank);
     }
 }

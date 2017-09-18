@@ -39,5 +39,7 @@ public sealed class GameManager : MonoBehaviour
     private void Init()
     {
         DontDestroyOnLoad(gameObject);
+
+        Deck deck = new Deck();
     }
 }
