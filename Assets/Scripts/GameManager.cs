@@ -41,5 +41,7 @@ public sealed class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Deck deck = new Deck();
+        deck.DrawCard();
+        deck.DrawCard();
     }
 }
