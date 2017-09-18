@@ -14,8 +14,13 @@ public sealed class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField]
-    private Transform canvas;
+    public PlayerController PlayerController;
+    public ComputerController ComputerController;
+    public PileController PileController;
+
+    private Deck deck;
+    private byte round;
+    private byte move;
 
     private void Awake()
     {
@@ -40,9 +45,14 @@ public sealed class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        Deck deck = new Deck();
+        deck = new Deck();
         deck.DrawCard();
         deck.DrawCard();
+    }
+
+    private void StartRound()
+    {
+        deck = new Deck();
     }
 
     public void PrintLog()

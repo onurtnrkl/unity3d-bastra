@@ -8,22 +8,17 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class CardView : MonoBehaviour, IPointerDownHandler
+public class CardView : MonoBehaviour
 {
-    public event Action OnClick;
-
     private Image image;
 
     private void Awake()
     {
         image = GetComponent<Image>();
-        OnClick += () => Debug.Log(gameObject.name + " was clicked.");
     }
 
     public void SetSprite(Sprite sprite)
@@ -31,8 +26,8 @@ public class CardView : MonoBehaviour, IPointerDownHandler
         image.sprite = sprite;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void SetActive(bool value)
     {
-        OnClick();
+        gameObject.SetActive(value);
     }
 }

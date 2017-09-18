@@ -2,7 +2,7 @@
 /*================================================================
 Product:    Bastra
 Developer:  Onur Tanrıkulu
-Date:       18/09/2017 14:53
+Date:       18/09/2017 17:14
 
 Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
@@ -10,14 +10,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour
+public class PileController : MonoBehaviour
 {
-    private Player player;
-
-    public PlayerController()
-    {
-        
-    }
-
-
+    
 }
