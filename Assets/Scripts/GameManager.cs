@@ -45,9 +45,7 @@ public sealed class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        deck = new Deck();
-        deck.DrawCard();
-        deck.DrawCard();
+        PileController.AddCard();
     }
 
     private void StartRound()

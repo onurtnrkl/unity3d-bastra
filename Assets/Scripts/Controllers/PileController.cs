@@ -12,5 +12,23 @@ using UnityEngine;
 
 public class PileController : MonoBehaviour
 {
-    
+    private Pile pile;
+    private CardView pileView;
+    private CardView firstPileView;
+
+    private void Awake()
+    {
+        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+
+        pileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
+        firstPileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
+    }
+
+    public void AddCard()
+    {
+        Card card = new Card(Suit.Clubs, Rank.A);
+        Sprite sprite = SpriteManager.Instance.GetSprite(card.ToString());
+
+        pileView.SetSprite(sprite);
+    }
 }
