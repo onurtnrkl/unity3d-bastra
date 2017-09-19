@@ -67,9 +67,10 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     private void PlayCard(Card card)
     {
-        cardViews[0].SetActive(false);//FIXME: find active views.
-        Debug.Log("Break point");
+        int index = hand.Count() - 1;
+
         hand.RemoveCard(card);
+        cardViews[index].SetActive(false);
 
         pileController.AddCard(card);
     }
