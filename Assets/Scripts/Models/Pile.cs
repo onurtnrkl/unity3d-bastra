@@ -14,12 +14,12 @@ using System.Text;
 public sealed class Pile
 {
     private List<Card> cards;
-    private bool isFirst;//is first pile? if is set active facedown card on pile area.
+    public bool IsFirst;//is first pile? if is set active facedown card on pile area.
 
     public Pile()
     {
         cards = new List<Card>();
-        isFirst = true;
+        IsFirst = true;
     }
 
     public void AddCard(Card card)
@@ -62,7 +62,8 @@ public sealed class Pile
             string name = card.ToString();
 
             stringBuilder.Append(name);
-            stringBuilder.Append(" | ");
+
+            if(i < length - 1) stringBuilder.Append(" | ");
         }
 
         return stringBuilder.ToString();

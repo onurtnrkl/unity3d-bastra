@@ -2,20 +2,13 @@
 /*================================================================
 Product:    Bastra
 Developer:  Onur Tanrıkulu
-Date:       18/09/2017 14:53
+Date:       19/09/2017 11:17
 
 Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-using UnityEngine;
-
-public sealed class PlayerController : MonoBehaviour
+public interface IController
 {
-    private Player player;
-
-    public PlayerController()
-    {
-        
-    }
+    void Init();
 }

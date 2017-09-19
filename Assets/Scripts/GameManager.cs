@@ -16,7 +16,7 @@ public sealed class GameManager : MonoBehaviour
 
     public PlayerController PlayerController;
     public ComputerController ComputerController;
-    public PileController PileController;
+    public BoardController PileController;
 
     private Deck deck;
     private byte round;
@@ -45,6 +45,7 @@ public sealed class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
+        PileController.Init();
         StartRound();
     }
 
@@ -54,10 +55,18 @@ public sealed class GameManager : MonoBehaviour
         round++;
         move = 0;
 
-        PileController.PlaceCard(deck.DrawCard());
-        PileController.PlaceCard(deck.DrawCard());
-        PileController.PlaceCard(deck.DrawCard());
-        PileController.PlaceCard(deck.DrawCard());
+        
+        DealCards();
+    }
+
+    private void DealCards()
+    {
+        for (byte i = 0; i < 4; i++)
+        {
+            PileController.PlaceCard(deck.DrawCard());
+            //TODO: Add computer
+            //TODO: Add player
+        }
     }
 
     public void PrintLog()

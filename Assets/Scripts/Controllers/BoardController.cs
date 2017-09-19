@@ -10,20 +10,27 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using UnityEngine;
 
-public class PileController : MonoBehaviour
+public sealed class BoardController : MonoBehaviour, IController
 {
     private Pile pile;
     private CardView pileView;
     private CardView firstPileView;
 
-    private void Awake()
+    public void Init()
     {
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
 
         pileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
         firstPileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
 
+        Restart();
+    }
+
+    public void Restart()
+    {
         pile = new Pile();
+
+        firstPileView.SetActive(true);
     }
 
     public void PlaceCard(Card card)
@@ -34,8 +41,15 @@ public class PileController : MonoBehaviour
         pileView.SetSprite(sprite);
 
         pile.AddCard(card);
-        byte score = pile.GetScore();
-        //Debug.Log("Pile Score: " + score);
         Debug.Log(pile);
+    }
+
+    public void TakeCards()
+    {
+        if (pile.IsFirst)
+        {
+            firstPileView.SetActive(false);
+            //TODO: Show taken cards.
+        }
     }
 }
