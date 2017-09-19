@@ -45,7 +45,7 @@ public sealed class PlayerController : MonoBehaviour, IController
 
     public void AddCard(Card card)
     {
-        int index = player.Hand.Count;
+        int index = player.Hand.Count();
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
         PlayerCardView cardView = cardViews[index];
 
@@ -53,13 +53,13 @@ public sealed class PlayerController : MonoBehaviour, IController
         cardView.SetSprite(sprite);
         cardView.SetActive(true);
 
-        player.Hand.Add(card);
+        player.Hand.AddCard(card);
     }
 
     private void OnPlaceCard(Card card, int index)
     {
-        player.Hand.Remove(card);
+        player.Hand.RemoveCard(card);
         cardViews[index].SetActive(false);
-        Debug.Log(player);
+        Debug.Log(player.Hand);
     }
 }

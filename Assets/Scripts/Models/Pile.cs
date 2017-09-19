@@ -8,22 +8,13 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-public sealed class Pile
+public sealed class Pile : CardCollection
 {
-    private List<Card> cards;
-
-    public Pile()
+    public Pile() : base()
     {
-        cards = new List<Card>();
-    }
-
-    public void AddCard(Card card)
-    {
-        cards.Add(card);
+        
     }
 
     public Card[] TakeCards()
@@ -52,26 +43,5 @@ public sealed class Pile
         }
 
         return score;
-    }
-
-    public override string ToString()
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        int length = cards.Count;
-
-        if (length == 0) stringBuilder.Append("Empty");
-
-        for (byte i = 0; i < length; i++)
-        {
-            Card card = cards[i];
-            string name = card.ToString();
-
-            stringBuilder.Append(name);
-
-            if(i < length - 1) stringBuilder.Append(" | ");
-        }
-
-        return stringBuilder.ToString();
     }
 }

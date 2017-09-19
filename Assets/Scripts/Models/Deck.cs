@@ -14,18 +14,14 @@ using UnityEngine;
 
 using Random = System.Random;
 
-public sealed class Deck
+public sealed class Deck : CardCollection
 {
-    private List<Card> cards;
-
     /// <summary>
     /// Creates standart 52 card deck
     /// https://en.wikipedia.org/wiki/Standard_52-card_deck
     /// </summary>
-    public Deck()
+    public Deck() : base()
     {
-        cards = new List<Card>();
-
         AddCards();
         Shuffle();
     }
@@ -59,6 +55,10 @@ public sealed class Deck
         //}
     }
 
+    /// <summary>
+    /// Draws top card from deck.
+    /// </summary>
+    /// <returns></returns>
     public Card DrawCard()
     {
         Card card = cards.Last();
