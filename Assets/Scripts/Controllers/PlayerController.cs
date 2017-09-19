@@ -13,11 +13,16 @@ using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour, ICardController
 {
+    private PileController pileController;
+    private ComputerController computerController;
     private Hand hand;
     private List<PlayerCardView> cardViews;
 
     public void Init()
     {
+        pileController = GameManager.Instance.PileController;
+        computerController = GameManager.Instance.ComputerController;
+
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         Transform handGroup = transform.GetChild(0);
 
@@ -61,7 +66,9 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        GameManager.Instance.PileController.AddCard(card);
+        pileController.AddCard(card);
+
+        computerController.Play();
     }
 
     public void PrintLog()

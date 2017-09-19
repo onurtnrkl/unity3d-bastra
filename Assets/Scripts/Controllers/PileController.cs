@@ -12,7 +12,8 @@ using UnityEngine;
 
 public sealed class PileController : MonoBehaviour, ICardController
 {
-    private Pile pile;
+    public Pile Pile { get; private set; }
+
     private CardView pileView;
     private GameObject faceDownPile;
 
@@ -28,7 +29,7 @@ public sealed class PileController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        pile = new Pile();
+        Pile = new Pile();
 
         faceDownPile.SetActive(true);
     }
@@ -39,7 +40,7 @@ public sealed class PileController : MonoBehaviour, ICardController
 
         pileView.SetSprite(sprite);
 
-        pile.AddCard(card);
+        Pile.AddCard(card);
     }
 
     public void Clean()
@@ -55,6 +56,6 @@ public sealed class PileController : MonoBehaviour, ICardController
 
     public void PrintLog()
     {
-        Debug.Log("Pile: " + pile);
+        Debug.Log("Pile: " + Pile);
     }
 }

@@ -15,16 +15,49 @@ public sealed class ComputerHand : Hand
 
     }
 
-    public bool IsRankExist(Card card)
+    //private bool IsRankExist(Card card)
+    //{
+    //    Rank rank = card.Rank;
+    //    int length = cards.Count;
+
+    //    for (int i = 0; i < length; i++)
+    //    {
+    //        if (rank == cards[i].Rank) return true;
+    //    }
+
+    //    return false;
+    //}
+
+    /// <summary>
+    /// Ai selects best card from deck.
+    /// </summary>
+    /// <param name="card">Pile top card</param>
+    /// <returns></returns>
+    public Card GetBestCard(Card card)
     {
         Rank rank = card.Rank;
         int length = cards.Count;
 
         for (int i = 0; i < length; i++)
         {
-            if (rank == cards[i].Rank) return true;
+            if (rank == cards[i].Rank) return cards[i];
         }
 
-        return false;
+        for (int i = 0; i < length; i++)
+        {
+            if (cards[i].GetScore() == 0) return cards[i];
+        }
+
+        for (int i = 0; i < length; i++)
+        {
+            if (cards[i].GetScore() == 1) return cards[i];
+        }
+
+        for (int i = 0; i < length; i++)
+        {
+            if (cards[i].GetScore() == 2) return cards[i];
+        }
+
+        return cards[length];
     }
 }

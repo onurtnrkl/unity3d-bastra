@@ -13,11 +13,14 @@ using UnityEngine;
 
 public sealed class ComputerController : MonoBehaviour, ICardController
 {
+    private PileController pileController;
     private ComputerHand hand;
     private List<GameObject> cardViews;
 
     public void Init()
     {
+        pileController = GameManager.Instance.PileController;
+
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         Transform handGroup = transform.GetChild(0);
 
@@ -53,9 +56,22 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         hand.AddCard(card);
     }
 
-    public void PlayCard()
+    public void Play()
     {
         //TODO: Computer AI
+        Card topCard = pileController.Pile.TopCard();
+        Card bestCard = hand.GetBestCard(topCard);
+
+        PlayCard(bestCard);
+    }
+
+    private void PlayCard(Card card)
+    {
+        cardViews[0].SetActive(false);//FIXME: find active views.
+        Debug.Log("Break point");
+        hand.RemoveCard(card);
+
+        pileController.AddCard(card);
     }
 
     public void PrintLog()
