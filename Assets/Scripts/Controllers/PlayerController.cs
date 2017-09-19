@@ -14,6 +14,7 @@ using UnityEngine;
 public sealed class PlayerController : MonoBehaviour, ICardController
 {
     private Player player;
+
     private List<PlayerCardView> cardViews;
 
     public void Init()
@@ -54,12 +55,16 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         cardView.SetActive(true);
 
         player.Hand.AddCard(card);
-        Debug.Log("Player Hand: " + player.Hand);
     }
 
     private void OnPlaceCard(Card card, int index)
     {
         player.Hand.RemoveCard(card);
         cardViews[index].SetActive(false);
+    }
+
+    public void PrintLog()
+    {
+        Debug.Log("Player Hand: " + player.Hand);
     }
 }

@@ -16,7 +16,7 @@ public sealed class GameManager : MonoBehaviour
 
     public PlayerController PlayerController;
     public ComputerController ComputerController;
-    public PileController BoardController;
+    public PileController PileController;
 
     private Deck deck;
     private byte round;
@@ -38,14 +38,17 @@ public sealed class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+        if (Input.GetMouseButtonDown(1))
+        {
+            PrintLog();
+        }
     }
 
     private void Init()
     {
         DontDestroyOnLoad(gameObject);
 
-        BoardController.Init();
+        PileController.Init();
         PlayerController.Init();
         ComputerController.Init();
 
@@ -66,7 +69,7 @@ public sealed class GameManager : MonoBehaviour
     {
         for (byte i = 0; i < 4; i++)
         {
-            BoardController.AddCard(deck.DrawCard());
+            PileController.AddCard(deck.DrawCard());
             PlayerController.AddCard(deck.DrawCard());
             ComputerController.AddCard(deck.DrawCard());
         }
@@ -74,9 +77,9 @@ public sealed class GameManager : MonoBehaviour
 
     public void PrintLog()
     {
-        //Round 1, Move 1
-        //Pile_Cards = x | x | x | x
-        //Player_Hand = = x | x | x | x
-        //Computer_Hand = = x | x | x | x
+        Debug.LogFormat("Round: {0} | Move: {1}", round, move);
+        PileController.PrintLog();
+        PlayerController.PrintLog();
+        ComputerController.PrintLog();
     }
 }

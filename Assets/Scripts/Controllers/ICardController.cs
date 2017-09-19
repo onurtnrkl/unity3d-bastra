@@ -10,5 +10,6 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 public interface ICardController : IController
 {
-    void AddCard(Card card);    
+    void AddCard(Card card);
+    void PrintLog();
 }

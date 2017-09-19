@@ -11,7 +11,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComputerController : MonoBehaviour, ICardController
+public sealed class ComputerController : MonoBehaviour, ICardController
 {
     private Player computer;
     private List<GameObject> cardViews;
@@ -51,11 +51,15 @@ public class ComputerController : MonoBehaviour, ICardController
         cardView.SetActive(true);
 
         computer.Hand.AddCard(card);
-        Debug.Log("Computer Hand: " + computer.Hand);
     }
 
     public void PlayCard()
     {
         //TODO: Computer AI
+    }
+
+    public void PrintLog()
+    {
+        Debug.Log("Computer Hand: " + computer.Hand);
     }
 }

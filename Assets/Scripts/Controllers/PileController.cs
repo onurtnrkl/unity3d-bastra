@@ -40,7 +40,6 @@ public sealed class PileController : MonoBehaviour, ICardController
         pileView.SetSprite(sprite);
 
         pile.AddCard(card);
-        Debug.Log("Pile: " + pile);
     }
 
     public void Clean()
@@ -52,5 +51,10 @@ public sealed class PileController : MonoBehaviour, ICardController
         }
 
         pileView.SetActive(false);
+    }
+
+    public void PrintLog()
+    {
+        Debug.Log("Pile: " + pile);
     }
 }
