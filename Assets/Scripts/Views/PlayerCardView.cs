@@ -11,7 +11,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 using System;
 using UnityEngine.EventSystems;
 
-public sealed class HandCardView : CardView, IPointerDownHandler
+public sealed class PlayerCardView : CardView, IPointerDownHandler
 {
     public event Action OnClick;
 

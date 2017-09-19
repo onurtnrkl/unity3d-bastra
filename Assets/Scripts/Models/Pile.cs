@@ -9,17 +9,16 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public sealed class Pile
 {
     private List<Card> cards;
-    public bool IsFirst;//is first pile? if is set active facedown card on pile area.
 
     public Pile()
     {
         cards = new List<Card>();
-        IsFirst = true;
     }
 
     public void AddCard(Card card)
@@ -33,6 +32,11 @@ public sealed class Pile
         cards.Clear();
 
         return takenCards;
+    }
+
+    public Card TopCard()
+    {
+        return cards.Last();
     }
 
     public byte GetScore()

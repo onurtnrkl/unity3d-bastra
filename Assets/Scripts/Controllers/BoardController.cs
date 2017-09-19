@@ -14,14 +14,14 @@ public sealed class BoardController : MonoBehaviour, IController
 {
     private Pile pile;
     private CardView pileView;
-    private CardView firstPileView;
+    private GameObject firstPile;
 
     public void Init()
     {
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
 
-        pileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
-        firstPileView = Instantiate(cardPrefab, transform).GetComponent<CardView>();
+        pileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
+        firstPile = Instantiate(cardPrefab, transform);
 
         Restart();
     }
@@ -30,7 +30,7 @@ public sealed class BoardController : MonoBehaviour, IController
     {
         pile = new Pile();
 
-        firstPileView.SetActive(true);
+        firstPile.SetActive(true);
     }
 
     public void PlaceCard(Card card)
@@ -44,12 +44,14 @@ public sealed class BoardController : MonoBehaviour, IController
         Debug.Log(pile);
     }
 
-    public void TakeCards()
+    public void CleanPile()
     {
-        if (pile.IsFirst)
+        if (firstPile.activeInHierarchy)
         {
-            firstPileView.SetActive(false);
+            firstPile.SetActive(false);
             //TODO: Show taken cards.
         }
+
+        pileView.SetActive(false);
     }
 }
