@@ -43,6 +43,13 @@ public sealed class ComputerHand : Hand
             if (rank == cards[i].Rank) return cards[i];
         }
 
+        return GetLowPointCard();
+    }
+
+    public Card GetLowPointCard()
+    {
+        int length = cards.Count;
+
         for (int i = 0; i < length; i++)
         {
             if (cards[i].GetScore() == 0) return cards[i];
@@ -58,6 +65,6 @@ public sealed class ComputerHand : Hand
             if (cards[i].GetScore() == 2) return cards[i];
         }
 
-        return cards[length];
+        return cards[0];
     }
 }

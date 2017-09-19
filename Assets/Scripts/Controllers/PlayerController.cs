@@ -66,9 +66,28 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        pileController.AddCard(card);
+        if (pileController.Pile.IsEmpty())
+        {
+            pileController.AddCard(card);
+        }
+        else
+        {
+            Card topCard = pileController.Pile.TopCard();
+
+            if (card.Rank == topCard.Rank || card.Rank == Rank.J)
+            {
+                Debug.Log("Pisti");
+                pileController.TakeCards();
+            }
+            else
+            {
+                pileController.AddCard(card);
+            }
+        }
 
         computerController.Play();
+
+        if (hand.Count() == 0) GameManager.Instance.DealCards();
     }
 
     public void PrintLog()

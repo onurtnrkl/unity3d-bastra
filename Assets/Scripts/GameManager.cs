@@ -61,15 +61,15 @@ public sealed class GameManager : MonoBehaviour
         round++;
         move = 0;
 
-        
+        for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
+
         DealCards();
     }
 
-    private void DealCards()
+    public void DealCards()
     {
         for (byte i = 0; i < 4; i++)
         {
-            PileController.AddCard(deck.DrawCard());
             PlayerController.AddCard(deck.DrawCard());
             ComputerController.AddCard(deck.DrawCard());
         }

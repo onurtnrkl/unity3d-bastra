@@ -17,17 +17,27 @@ public sealed class Pile : CardCollection
         
     }
 
-    public Card[] TakeCards()
-    {
-        Card[] takenCards = cards.ToArray();
-        cards.Clear();
+    //public Card[] TakeCards()
+    //{
+    //    Card[] takenCards = cards.ToArray();
+    //    cards.Clear();
 
-        return takenCards;
+    //    return takenCards;
+    //}
+    public void Clear()
+    {
+        cards.Clear();
     }
 
     public Card TopCard()
     {
         return cards.Last();
+    }
+
+    public bool IsEmpty()
+    {
+        if (cards.Count == 0) return true;
+        else return false;
     }
 
     public byte GetScore()

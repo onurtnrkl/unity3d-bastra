@@ -59,20 +59,41 @@ public sealed class ComputerController : MonoBehaviour, ICardController
     public void Play()
     {
         //TODO: Computer AI
-        Card topCard = pileController.Pile.TopCard();
-        Card bestCard = hand.GetBestCard(topCard);
+        if (pileController.Pile.IsEmpty())
+        {
+            Card lowPointCard = hand.GetLowPointCard();
+            int index = hand.Count() - 1;
 
-        PlayCard(bestCard);
+            hand.RemoveCard(lowPointCard);
+            cardViews[index].SetActive(false);
+            pileController.AddCard(lowPointCard);
+            Debug.Log("Pile is empty");
+        }
+        else
+        {
+            Card topCard = pileController.Pile.TopCard();
+            Card bestCard = hand.GetBestCard(topCard);
+
+            PlayCard(bestCard);
+        }        
     }
 
     private void PlayCard(Card card)
     {
+        Card topCard = pileController.Pile.TopCard();
         int index = hand.Count() - 1;
 
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        pileController.AddCard(card);
+        if (card.Rank == topCard.Rank || card.Rank == Rank.J)
+        {
+            pileController.TakeCards();
+        }
+        else
+        {
+            pileController.AddCard(card);
+        }
     }
 
     public void PrintLog()

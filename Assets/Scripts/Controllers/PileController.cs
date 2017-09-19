@@ -41,10 +41,14 @@ public sealed class PileController : MonoBehaviour, ICardController
         pileView.SetSprite(sprite);
 
         Pile.AddCard(card);
+
+        if (!pileView.gameObject.activeInHierarchy) pileView.SetActive(true);
     }
 
-    public void Clean()
+    public byte TakeCards()
     {
+        byte score = Pile.GetScore();
+
         if (faceDownPile.activeInHierarchy)
         {
             faceDownPile.SetActive(false);
@@ -52,6 +56,9 @@ public sealed class PileController : MonoBehaviour, ICardController
         }
 
         pileView.SetActive(false);
+        Pile.Clear();
+
+        return score;
     }
 
     public void PrintLog()
