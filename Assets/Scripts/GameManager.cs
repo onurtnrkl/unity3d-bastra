@@ -16,7 +16,7 @@ public sealed class GameManager : MonoBehaviour
 
     public PlayerController PlayerController;
     public ComputerController ComputerController;
-    public BoardController BoardController;
+    public PileController BoardController;
 
     private Deck deck;
     private byte round;
@@ -47,6 +47,7 @@ public sealed class GameManager : MonoBehaviour
 
         BoardController.Init();
         PlayerController.Init();
+        ComputerController.Init();
 
         StartRound();
     }
@@ -65,9 +66,9 @@ public sealed class GameManager : MonoBehaviour
     {
         for (byte i = 0; i < 4; i++)
         {
-            BoardController.PlaceCard(deck.DrawCard());
+            BoardController.AddCard(deck.DrawCard());
             PlayerController.AddCard(deck.DrawCard());
-            //TODO: Add player
+            ComputerController.AddCard(deck.DrawCard());
         }
     }
 

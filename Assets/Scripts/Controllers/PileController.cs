@@ -10,7 +10,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using UnityEngine;
 
-public sealed class BoardController : MonoBehaviour, IController
+public sealed class PileController : MonoBehaviour, ICardController
 {
     private Pile pile;
     private CardView pileView;
@@ -33,16 +33,17 @@ public sealed class BoardController : MonoBehaviour, IController
         faceDownPile.SetActive(true);
     }
 
-    public void PlaceCard(Card card)
+    public void AddCard(Card card)
     {
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
 
         pileView.SetSprite(sprite);
+
         pile.AddCard(card);
-        Debug.Log(pile);
+        Debug.Log("Pile: " + pile);
     }
 
-    public void CleanPile()
+    public void Clean()
     {
         if (faceDownPile.activeInHierarchy)
         {

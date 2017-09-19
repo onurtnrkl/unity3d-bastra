@@ -11,7 +11,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour, IController
+public sealed class PlayerController : MonoBehaviour, ICardController
 {
     private Player player;
     private List<PlayerCardView> cardViews;
@@ -54,12 +54,12 @@ public sealed class PlayerController : MonoBehaviour, IController
         cardView.SetActive(true);
 
         player.Hand.AddCard(card);
+        Debug.Log("Player Hand: " + player.Hand);
     }
 
     private void OnPlaceCard(Card card, int index)
     {
         player.Hand.RemoveCard(card);
         cardViews[index].SetActive(false);
-        Debug.Log(player.Hand);
     }
 }

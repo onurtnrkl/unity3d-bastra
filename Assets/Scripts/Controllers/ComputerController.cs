@@ -8,9 +8,54 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ComputerController : MonoBehaviour
+public class ComputerController : MonoBehaviour, ICardController
 {
-    
+    private Player computer;
+    private List<GameObject> cardViews;
+
+    public void Init()
+    {
+        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+        Transform handGroup = transform.GetChild(0);
+
+        cardViews = new List<GameObject>();
+
+        for (byte i = 0; i < 4; i++)
+        {
+            GameObject cardView = Instantiate(cardPrefab, handGroup);
+
+            cardViews.Add(cardView);
+        }
+
+        Restart();
+    }
+
+    public void Restart()
+    {
+        computer = new Player();
+
+        for (byte i = 0; i < 4; i++)
+        {
+            cardViews[i].SetActive(false);
+        }
+    }
+
+    public void AddCard(Card card)
+    {
+        int index = computer.Hand.Count();
+        GameObject cardView = cardViews[index];
+
+        cardView.SetActive(true);
+
+        computer.Hand.AddCard(card);
+        Debug.Log("Computer Hand: " + computer.Hand);
+    }
+
+    public void PlayCard()
+    {
+        //TODO: Computer AI
+    }
 }
