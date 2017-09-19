@@ -10,12 +10,15 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class ComputerController : MonoBehaviour, ICardController
 {
     private PileController pileController;
     private ComputerHand hand;
     private List<GameObject> cardViews;
+    private Text scoreText;
+    private byte score;
 
     public void Init()
     {
@@ -23,6 +26,9 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         Transform handGroup = transform.GetChild(0);
+        Transform scoreGroup = transform.GetChild(1);
+
+        scoreText = scoreGroup.GetChild(1).GetComponent<Text>();
 
         cardViews = new List<GameObject>();
 
@@ -67,7 +73,6 @@ public sealed class ComputerController : MonoBehaviour, ICardController
             hand.RemoveCard(lowPointCard);
             cardViews[index].SetActive(false);
             pileController.AddCard(lowPointCard);
-            Debug.Log("Pile is empty");
         }
         else
         {
@@ -80,20 +85,27 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     private void PlayCard(Card card)
     {
-        Card topCard = pileController.Pile.TopCard();
         int index = hand.Count() - 1;
 
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        if (card.Rank == topCard.Rank || card.Rank == Rank.J)
+        if (pileController.CanCollected(card))
         {
-            pileController.TakeCards();
+            byte collectScore = pileController.Collect(card);
+
+            AddScore(collectScore);
         }
         else
         {
             pileController.AddCard(card);
         }
+    }
+
+    private void AddScore(byte score)
+    {
+        this.score += score;
+        scoreText.text = this.score.ToString();
     }
 
     public void PrintLog()

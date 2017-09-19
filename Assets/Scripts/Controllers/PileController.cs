@@ -45,9 +45,27 @@ public sealed class PileController : MonoBehaviour, ICardController
         if (!pileView.gameObject.activeInHierarchy) pileView.SetActive(true);
     }
 
-    public byte TakeCards()
+    public byte Collect(Card card)
     {
-        byte score = Pile.GetScore();
+        byte score;
+
+        if (Pile.Count() == 1)//Pisti
+        {
+            if (Pile.TopCard().Rank == Rank.J)
+            {
+                score = 20;
+            }
+            else if (card.Rank != Rank.J)
+            {
+                score = 10;
+            }
+            else score = 1;
+        }
+        else
+        {
+            Pile.AddCard(card);
+            score = Pile.GetScore();
+        }
 
         if (faceDownPile.activeInHierarchy)
         {
@@ -59,6 +77,21 @@ public sealed class PileController : MonoBehaviour, ICardController
         Pile.Clear();
 
         return score;
+    }
+
+    public bool CanCollected(Card card)
+    {
+        if (!Pile.IsEmpty())
+        {
+            if (card.Rank == Rank.J) return true;
+            else if (card.Rank == Pile.TopCard().Rank) return true;
+            else return false;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 
     public void PrintLog()

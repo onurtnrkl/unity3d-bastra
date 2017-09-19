@@ -10,6 +10,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class PlayerController : MonoBehaviour, ICardController
 {
@@ -17,6 +18,8 @@ public sealed class PlayerController : MonoBehaviour, ICardController
     private ComputerController computerController;
     private Hand hand;
     private List<PlayerCardView> cardViews;
+    private Text scoreText;
+    private byte score;
 
     public void Init()
     {
@@ -25,6 +28,9 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         Transform handGroup = transform.GetChild(0);
+        Transform scoreGroup = transform.GetChild(1);
+
+        scoreText = scoreGroup.GetChild(1).GetComponent<Text>();
 
         cardViews = new List<PlayerCardView>();
 
@@ -54,7 +60,7 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
         PlayerCardView cardView = cardViews[index];
 
-        cardView.OnClick = ()=> OnPlaceCard(card, index);
+        cardView.OnClick = () => OnPlaceCard(card, index);
         cardView.SetSprite(sprite);
         cardView.SetActive(true);
 
@@ -65,29 +71,27 @@ public sealed class PlayerController : MonoBehaviour, ICardController
     {
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
-
-        if (pileController.Pile.IsEmpty())
+        
+        if (pileController.CanCollected(card))
         {
-            pileController.AddCard(card);
+            byte collectScore = pileController.Collect(card);
+
+            AddScore(collectScore);
         }
         else
         {
-            Card topCard = pileController.Pile.TopCard();
-
-            if (card.Rank == topCard.Rank || card.Rank == Rank.J)
-            {
-                Debug.Log("Pisti");
-                pileController.TakeCards();
-            }
-            else
-            {
-                pileController.AddCard(card);
-            }
+            pileController.AddCard(card);
         }
 
         computerController.Play();
 
         if (hand.Count() == 0) GameManager.Instance.DealCards();
+    }
+
+    private void AddScore(byte score)
+    {
+        this.score += score;
+        scoreText.text = this.score.ToString();
     }
 
     public void PrintLog()

@@ -31,7 +31,7 @@ public sealed class Pile : CardCollection
 
     public Card TopCard()
     {
-        return cards.Last();
+        return cards[Count() - 1];
     }
 
     public bool IsEmpty()
