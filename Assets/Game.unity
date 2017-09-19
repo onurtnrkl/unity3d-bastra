@@ -512,7 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerController: {fileID: 1050308093}
   ComputerController: {fileID: 1914405291}
-  PileController: {fileID: 1299116365}
+  BoardController: {fileID: 1299116365}
 --- !u!1 &1251005519
 GameObject:
   m_ObjectHideFlags: 0

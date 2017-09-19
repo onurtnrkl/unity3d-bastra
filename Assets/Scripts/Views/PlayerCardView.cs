@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 
 public sealed class PlayerCardView : CardView, IPointerDownHandler
 {
-    public event Action OnClick;
+    public Action OnClick;
 
     public void OnPointerDown(PointerEventData eventData)
     {

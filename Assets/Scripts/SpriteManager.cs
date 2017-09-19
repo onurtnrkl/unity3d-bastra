@@ -47,4 +47,14 @@ public sealed class SpriteManager
     {
         return sprites[name];
     }
+
+    /// <summary>
+    /// Returns sprite with card.
+    /// </summary>
+    /// <param name="card">Card</param>
+    /// <returns></returns>
+    public Sprite GetSprite(Card card)
+    {
+        return sprites[card.ToString()];
+    }
 }

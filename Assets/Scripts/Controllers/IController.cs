@@ -11,4 +11,5 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 public interface IController
 {
     void Init();
+    void Restart();
 }

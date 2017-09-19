@@ -43,7 +43,7 @@ public sealed class Pile
     {
         byte score = 0;
 
-        byte length = (byte)cards.Count;
+        int length = cards.Count;
 
         for (byte i = 0; i < length; i++)
         {
@@ -58,7 +58,9 @@ public sealed class Pile
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        byte length = (byte)cards.Count;
+        int length = cards.Count;
+
+        if (length == 0) stringBuilder.Append("Empty");
 
         for (byte i = 0; i < length; i++)
         {
