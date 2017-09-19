@@ -13,7 +13,7 @@ using UnityEngine;
 
 public sealed class ComputerController : MonoBehaviour, ICardController
 {
-    private Player computer;
+    private ComputerHand hand;
     private List<GameObject> cardViews;
 
     public void Init()
@@ -35,7 +35,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        computer = new Player();
+        hand = new ComputerHand();
 
         for (byte i = 0; i < 4; i++)
         {
@@ -45,12 +45,12 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void AddCard(Card card)
     {
-        int index = computer.Hand.Count();
+        int index = hand.Count();
         GameObject cardView = cardViews[index];
 
         cardView.SetActive(true);
 
-        computer.Hand.AddCard(card);
+        hand.AddCard(card);
     }
 
     public void PlayCard()
@@ -60,6 +60,6 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void PrintLog()
     {
-        Debug.Log("Computer Hand: " + computer.Hand);
+        Debug.Log("Computer Hand: " + hand);
     }
 }

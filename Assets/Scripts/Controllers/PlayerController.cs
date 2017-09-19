@@ -13,8 +13,7 @@ using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour, ICardController
 {
-    private Player player;
-
+    private Hand hand;
     private List<PlayerCardView> cardViews;
 
     public void Init()
@@ -36,7 +35,7 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        player = new Player();
+        hand = new Hand();
 
         for (byte i = 0; i < 4; i++)
         {
@@ -46,7 +45,7 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
     public void AddCard(Card card)
     {
-        int index = player.Hand.Count();
+        int index = hand.Count();
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
         PlayerCardView cardView = cardViews[index];
 
@@ -54,17 +53,19 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         cardView.SetSprite(sprite);
         cardView.SetActive(true);
 
-        player.Hand.AddCard(card);
+        hand.AddCard(card);
     }
 
     private void OnPlaceCard(Card card, int index)
     {
-        player.Hand.RemoveCard(card);
+        hand.RemoveCard(card);
         cardViews[index].SetActive(false);
+
+        GameManager.Instance.PileController.AddCard(card);
     }
 
     public void PrintLog()
     {
-        Debug.Log("Player Hand: " + player.Hand);
+        Debug.Log("Player Hand: " + hand);
     }
 }

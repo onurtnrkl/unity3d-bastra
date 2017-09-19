@@ -8,7 +8,6 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
