@@ -18,7 +18,9 @@ public sealed class ComputerController : MonoBehaviour, ICardController
     private ComputerHand hand;
     private List<GameObject> cardViews;
     private Text scoreText;
-    private byte score;
+
+    public byte Score { get; private set; }
+    public int CollectedCards;
 
     public void Init()
     {
@@ -38,8 +40,6 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
             cardViews.Add(cardView);
         }
-
-        Restart();
     }
 
     public void Restart()
@@ -65,7 +65,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
     public void Play()
     {
         //TODO: Computer AI
-        if (pileController.pile.IsEmpty())
+        if (pileController.Pile.IsEmpty())
         {
             Card lowPointCard = hand.GetLowPointCard();
             int index = hand.Count() - 1;
@@ -76,11 +76,13 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         }
         else
         {
-            Card topCard = pileController.pile.TopCard();
+            Card topCard = pileController.Pile.TopCard();
             Card bestCard = hand.GetBestCard(topCard);
 
             PlayCard(bestCard);
-        }        
+        }
+
+        GameManager.Instance.Move++;
     }
 
     private void PlayCard(Card card)
@@ -90,8 +92,10 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        if (pileController.pile.CanCollected(card))
+        if (pileController.Pile.CanCollected(card))
         {
+            CollectedCards += pileController.Pile.Count();
+
             byte collectScore = pileController.Collect(card);
 
             AddScore(collectScore);
@@ -102,10 +106,16 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         }
     }
 
-    private void AddScore(byte score)
+    public void AddScore(byte score)
     {
-        this.score += score;
-        scoreText.text = this.score.ToString();
+        Score += score;
+        scoreText.text = Score.ToString();
+    }
+
+    public void ResetScore()
+    {
+        Score = 0;
+        scoreText.text = Score.ToString();
     }
 
     public void PrintLog()

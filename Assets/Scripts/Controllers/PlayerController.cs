@@ -19,7 +19,10 @@ public sealed class PlayerController : MonoBehaviour, ICardController
     private Hand hand;
     private List<PlayerCardView> cardViews;
     private Text scoreText;
-    private byte score;
+
+    public byte Score { get; private set; }
+
+    public int CollectedCards { get; private set; }
 
     public void Init()
     {
@@ -40,13 +43,13 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
             cardViews.Add(cardView);
         }
-
-        Restart();
     }
 
     public void Restart()
     {
         hand = new Hand();
+
+        CollectedCards = 0;
 
         for (byte i = 0; i < 4; i++)
         {
@@ -72,8 +75,10 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
         
-        if (pileController.pile.CanCollected(card))
+        if (pileController.Pile.CanCollected(card))
         {
+            CollectedCards += pileController.Pile.Count();
+
             byte collectScore = pileController.Collect(card);
 
             AddScore(collectScore);
@@ -83,15 +88,23 @@ public sealed class PlayerController : MonoBehaviour, ICardController
             pileController.AddCard(card);
         }
 
+        GameManager.Instance.Move++;
+
         computerController.Play();
 
         if (hand.Count() == 0) GameManager.Instance.DealCards();
     }
 
-    private void AddScore(byte score)
+    public void AddScore(byte score)
     {
-        this.score += score;
-        scoreText.text = this.score.ToString();
+        Score += score;
+        scoreText.text = Score.ToString();
+    }
+
+    public void ResetScore()
+    {
+        Score = 0;
+        scoreText.text = Score.ToString();
     }
 
     public void PrintLog()

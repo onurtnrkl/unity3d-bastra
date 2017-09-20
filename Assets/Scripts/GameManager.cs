@@ -18,8 +18,13 @@ public sealed class GameManager : MonoBehaviour
     public ComputerController ComputerController;
     public PileController PileController;
 
+    [SerializeField]
+    private MenuManager menuManager;
+
     private Deck deck;
     private byte round;
+
+    [HideInInspector]
     public byte Move;
 
     private void Awake()
@@ -48,18 +53,28 @@ public sealed class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
+        menuManager.Init();
         PileController.Init();
         PlayerController.Init();
         ComputerController.Init();
-
-        StartRound();
     }
 
-    private void StartRound()
+    public void Restart()
+    {
+        round = 0;
+        PlayerController.ResetScore();
+        ComputerController.ResetScore();
+    }
+
+    public void StartRound()
     {
         deck = new Deck();
         round++;
-        Move = 0;
+        Move = 1;
+
+        PileController.Restart();
+        PlayerController.Restart();
+        ComputerController.Restart();
 
         for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
 
@@ -68,18 +83,45 @@ public sealed class GameManager : MonoBehaviour
 
     private void EndRound()
     {
+        //Collect remaining cards from last turn;
+        ComputerController.CollectedCards += PileController.Pile.Count();
+        ComputerController.AddScore(PileController.Pile.GetScore());
 
+        if (PlayerController.Score >= 101 || ComputerController.Score >= 101)
+        {
+            menuManager.EndGame(PlayerController.Score, ComputerController.Score);
+        }
+        else
+        {
+            if (ComputerController.CollectedCards > PlayerController.CollectedCards)
+            {
+                ComputerController.AddScore(3);
+            }
+            else
+            {
+                PlayerController.AddScore(3);
+            }
+
+            StartRound();
+        }
     }
 
     public void DealCards()
     {
-        for (byte i = 0; i < 4; i++)
+        if (deck.Count() == 0)
         {
-            PlayerController.AddCard(deck.DrawCard());
-            ComputerController.AddCard(deck.DrawCard());
+            EndRound();
         }
+        else
+        {
+            for (byte i = 0; i < 4; i++)
+            {
+                PlayerController.AddCard(deck.DrawCard());
+                ComputerController.AddCard(deck.DrawCard());
+            }
 
-        Debug.LogFormat("Remaining Cards: {0}", deck.Count());
+            Debug.LogFormat("Remaining Cards: {0}", deck.Count());
+        }        
     }
 
     public void PrintLog()

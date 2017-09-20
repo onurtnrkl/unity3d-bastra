@@ -12,7 +12,7 @@ using UnityEngine;
 
 public sealed class PileController : MonoBehaviour, ICardController
 {
-    public Pile pile { get; private set; }
+    public Pile Pile { get; private set; }
     private CardView pileView;
     private GameObject faceDownPile;
 
@@ -22,13 +22,11 @@ public sealed class PileController : MonoBehaviour, ICardController
 
         pileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
         faceDownPile = Instantiate(cardPrefab, transform);
-
-        Restart();
     }
 
     public void Restart()
     {
-        pile = new Pile();
+        Pile = new Pile();
 
         faceDownPile.SetActive(true);
     }
@@ -39,7 +37,7 @@ public sealed class PileController : MonoBehaviour, ICardController
 
         pileView.SetSprite(sprite);
 
-        pile.AddCard(card);
+        Pile.AddCard(card);
 
         if (!pileView.gameObject.activeInHierarchy) pileView.SetActive(true);
     }
@@ -48,7 +46,7 @@ public sealed class PileController : MonoBehaviour, ICardController
     {
         byte score;
 
-        if (pile.IsBastra(card))
+        if (Pile.IsBastra(card))
         {
             if (card.Rank == Rank.J)
             {
@@ -63,10 +61,10 @@ public sealed class PileController : MonoBehaviour, ICardController
         }
         else
         {
-            pile.AddCard(card);
-            score = pile.GetScore();
+            Pile.AddCard(card);
+            score = Pile.GetScore();
 
-            Debug.Log(pile + " Collected!");
+            Debug.Log(Pile + " Collected!");
         }
 
         if (faceDownPile.activeInHierarchy)
@@ -76,13 +74,13 @@ public sealed class PileController : MonoBehaviour, ICardController
         }
 
         pileView.SetActive(false);
-        pile.Clear();
+        Pile.Clear();
 
         return score;
     }
 
     public void PrintLog()
     {
-        Debug.Log("Pile: " + pile);
+        Debug.Log("Pile: " + Pile);
     }
 }
