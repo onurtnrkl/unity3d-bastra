@@ -12,8 +12,7 @@ using UnityEngine;
 
 public sealed class PileController : MonoBehaviour, ICardController
 {
-    public Pile Pile { get; private set; }
-
+    public Pile pile { get; private set; }
     private CardView pileView;
     private GameObject faceDownPile;
 
@@ -29,7 +28,7 @@ public sealed class PileController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        Pile = new Pile();
+        pile = new Pile();
 
         faceDownPile.SetActive(true);
     }
@@ -40,7 +39,7 @@ public sealed class PileController : MonoBehaviour, ICardController
 
         pileView.SetSprite(sprite);
 
-        Pile.AddCard(card);
+        pile.AddCard(card);
 
         if (!pileView.gameObject.activeInHierarchy) pileView.SetActive(true);
     }
@@ -49,9 +48,9 @@ public sealed class PileController : MonoBehaviour, ICardController
     {
         byte score;
 
-        if (Pile.Count() == 1 && card.Rank != Rank.J)
+        if (pile.IsBastra(card))
         {
-            if (Pile.TopCard().Rank == Rank.J)
+            if (card.Rank == Rank.J)
             {
                 score = 20;
             }
@@ -60,14 +59,14 @@ public sealed class PileController : MonoBehaviour, ICardController
                 score = 10;
             }
 
-            Debug.Log(Pile + " Bastra!");
+            Debug.Log(card.Rank + " Bastra!");
         }
         else
         {
-            Pile.AddCard(card);
-            score = Pile.GetScore();
+            pile.AddCard(card);
+            score = pile.GetScore();
 
-            Debug.Log(Pile + " Collected!");
+            Debug.Log(pile + " Collected!");
         }
 
         if (faceDownPile.activeInHierarchy)
@@ -77,28 +76,13 @@ public sealed class PileController : MonoBehaviour, ICardController
         }
 
         pileView.SetActive(false);
-        Pile.Clear();
+        pile.Clear();
 
         return score;
     }
 
-    public bool CanCollected(Card card)
-    {
-        if (!Pile.IsEmpty())
-        {
-            if (card.Rank == Rank.J) return true;
-            else if (card.Rank == Pile.TopCard().Rank) return true;
-            else return false;
-        }
-        else
-        {
-            return false;
-        }
-        
-    }
-
     public void PrintLog()
     {
-        Debug.Log("Pile: " + Pile);
+        Debug.Log("Pile: " + pile);
     }
 }

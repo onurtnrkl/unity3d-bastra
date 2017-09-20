@@ -72,7 +72,7 @@ public sealed class PlayerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
         
-        if (pileController.CanCollected(card))
+        if (pileController.pile.CanCollected(card))
         {
             byte collectScore = pileController.Collect(card);
 

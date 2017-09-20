@@ -42,7 +42,7 @@ public abstract class CardCollection
 
         int length = cards.Count - 1;
 
-        if (length == 0) stringBuilder.Append("Empty");
+        if (length == -1) stringBuilder.Append("Empty");
 
         for (int i = length; i > -1; i--)
         {

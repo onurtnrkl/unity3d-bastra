@@ -65,7 +65,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
     public void Play()
     {
         //TODO: Computer AI
-        if (pileController.Pile.IsEmpty())
+        if (pileController.pile.IsEmpty())
         {
             Card lowPointCard = hand.GetLowPointCard();
             int index = hand.Count() - 1;
@@ -76,7 +76,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         }
         else
         {
-            Card topCard = pileController.Pile.TopCard();
+            Card topCard = pileController.pile.TopCard();
             Card bestCard = hand.GetBestCard(topCard);
 
             PlayCard(bestCard);
@@ -90,7 +90,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
 
-        if (pileController.CanCollected(card))
+        if (pileController.pile.CanCollected(card))
         {
             byte collectScore = pileController.Collect(card);
 

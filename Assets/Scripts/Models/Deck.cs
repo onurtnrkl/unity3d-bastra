@@ -62,8 +62,8 @@ public sealed class Deck : CardCollection
     {
         Card card = cards.Last();
         cards.Remove(card);
-        Debug.LogFormat("Drawn Card: {0}", card);
-        Debug.LogFormat("Remaining Cards: {0}", cards.Count);
+        //Debug.LogFormat("Drawn Card: {0}", card);
+        //Debug.LogFormat("Remaining Cards: {0}", cards.Count);
 
         return card;
     }

@@ -78,6 +78,8 @@ public sealed class GameManager : MonoBehaviour
             PlayerController.AddCard(deck.DrawCard());
             ComputerController.AddCard(deck.DrawCard());
         }
+
+        Debug.LogFormat("Remaining Cards: {0}", deck.Count());
     }
 
     public void PrintLog()

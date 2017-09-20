@@ -40,6 +40,34 @@ public sealed class Pile : CardCollection
         else return false;
     }
 
+    public bool IsBastra(Card card)
+    {
+        if (Count() == 1)
+        {
+            if (TopCard().Rank == card.Rank)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool CanCollected(Card card)
+    {
+        if (!IsEmpty())
+        {
+            if (card.Rank == Rank.J) return true;
+            else if (card.Rank == TopCard().Rank) return true;
+            else return false;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
     public byte GetScore()
     {
         byte score = 0;
