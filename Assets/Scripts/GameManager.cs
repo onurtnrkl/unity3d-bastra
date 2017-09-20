@@ -20,7 +20,7 @@ public sealed class GameManager : MonoBehaviour
 
     private Deck deck;
     private byte round;
-    private byte move;
+    public byte Move;
 
     private void Awake()
     {
@@ -59,11 +59,16 @@ public sealed class GameManager : MonoBehaviour
     {
         deck = new Deck();
         round++;
-        move = 0;
+        Move = 0;
 
         for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
 
         DealCards();
+    }
+
+    private void EndRound()
+    {
+
     }
 
     public void DealCards()
@@ -77,7 +82,7 @@ public sealed class GameManager : MonoBehaviour
 
     public void PrintLog()
     {
-        Debug.LogFormat("Round: {0} | Move: {1}", round, move);
+        Debug.LogFormat("Round: {0} | Move: {1}", round, Move);
         PileController.PrintLog();
         PlayerController.PrintLog();
         ComputerController.PrintLog();

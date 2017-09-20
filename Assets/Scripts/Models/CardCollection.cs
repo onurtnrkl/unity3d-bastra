@@ -37,6 +37,7 @@ public abstract class CardCollection
 
     public override string ToString()
     {
+        //FIXME: Sometimes returns Empty.
         StringBuilder stringBuilder = new StringBuilder();
 
         int length = cards.Count - 1;

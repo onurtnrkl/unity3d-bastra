@@ -49,22 +49,25 @@ public sealed class PileController : MonoBehaviour, ICardController
     {
         byte score;
 
-        if (Pile.Count() == 1)//Pisti
+        if (Pile.Count() == 1 && card.Rank != Rank.J)
         {
             if (Pile.TopCard().Rank == Rank.J)
             {
                 score = 20;
             }
-            else if (card.Rank != Rank.J)
+            else
             {
                 score = 10;
             }
-            else score = 1;
+
+            Debug.Log(Pile + " Bastra!");
         }
         else
         {
             Pile.AddCard(card);
             score = Pile.GetScore();
+
+            Debug.Log(Pile + " Collected!");
         }
 
         if (faceDownPile.activeInHierarchy)
