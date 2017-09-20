@@ -13,13 +13,18 @@ using UnityEngine;
 public sealed class PileController : MonoBehaviour, ICardController
 {
     public Pile Pile { get; private set; }
+
     private CardView pileView;
     private GameObject faceDownPile;
+    private AudioClip bastraClip;
+    private AudioClip collectClip;
 
     public void Init()
     {
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
 
+        bastraClip = Resources.Load<AudioClip>("Sounds/Bastra");
+        collectClip = Resources.Load<AudioClip>("Sounds/Collect");
         pileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
         faceDownPile = Instantiate(cardPrefab, transform);
     }
@@ -57,6 +62,7 @@ public sealed class PileController : MonoBehaviour, ICardController
                 score = 10;
             }
 
+            SoundManager.Instance.PlaySingleClip(bastraClip);
             Debug.Log(card.Rank + " Bastra!");
         }
         else
@@ -64,6 +70,7 @@ public sealed class PileController : MonoBehaviour, ICardController
             Pile.AddCard(card);
             score = Pile.GetScore();
 
+            SoundManager.Instance.PlaySingleClip(collectClip);
             Debug.Log(Pile + " Collected!");
         }
 
