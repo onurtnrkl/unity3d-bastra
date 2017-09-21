@@ -74,7 +74,8 @@ public sealed class PlayerController : MonoBehaviour, ICardController
     {
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
-        
+        Debug.Log("Player played: " + card);
+
         if (pileController.Pile.CanCollected(card))
         {
             CollectedCards += pileController.Pile.Count();

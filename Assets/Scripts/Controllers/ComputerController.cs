@@ -65,22 +65,19 @@ public sealed class ComputerController : MonoBehaviour, ICardController
     public void Play()
     {
         //TODO: Computer AI
+        Card card;
+
         if (pileController.Pile.IsEmpty())
         {
-            Card lowPointCard = hand.GetLowPointCard();
-            int index = hand.Count() - 1;
-
-            hand.RemoveCard(lowPointCard);
-            cardViews[index].SetActive(false);
-            pileController.AddCard(lowPointCard);
+            card = hand.GetLowPointCard();
         }
         else
         {
             Card topCard = pileController.Pile.TopCard();
-            Card bestCard = hand.GetBestCard(topCard);
-
-            PlayCard(bestCard);
+            card = hand.GetBestCard(topCard);
         }
+
+        PlayCard(card);
 
         GameManager.Instance.Move++;
     }
@@ -91,6 +88,7 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
         hand.RemoveCard(card);
         cardViews[index].SetActive(false);
+        Debug.Log("Computer played: " + card);
 
         if (pileController.Pile.CanCollected(card))
         {

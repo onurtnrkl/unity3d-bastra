@@ -63,7 +63,7 @@ public sealed class PileController : MonoBehaviour, ICardController
             }
 
             SoundManager.Instance.PlaySingleClip(bastraClip);
-            Debug.Log(card.Rank + " Bastra!");
+            Debug.Log("Bastra: " + card.Rank);
         }
         else
         {
@@ -71,7 +71,6 @@ public sealed class PileController : MonoBehaviour, ICardController
             score = Pile.GetScore();
 
             SoundManager.Instance.PlaySingleClip(collectClip);
-            Debug.Log(Pile + " Collected!");
         }
 
         if (faceDownPile.activeInHierarchy)
@@ -80,6 +79,7 @@ public sealed class PileController : MonoBehaviour, ICardController
             //TODO: Show taken cards.
         }
 
+        Debug.Log("Collected cards: " + Pile);
         pileView.SetActive(false);
         Pile.Clear();
 
