@@ -76,16 +76,21 @@ public sealed class PileController : MonoBehaviour, ICardController
             SoundManager.Instance.PlaySingleClip(collectClip);
         }
 
-        //PileView.MoveTo(target.position);
-
         if (faceDownPileView.gameObject.activeInHierarchy)
         {
+            Sprite sprite = SpriteManager.Instance.GetSprite("Clean");
+
             faceDownPileView.gameObject.SetActive(false);
+            PileView.SetSprite(sprite);
+
+            //Set Clean Texture to card.
             //faceDownPileView.MoveTo(target.position);
             //TODO: Show taken cards.
         }
-
-        PileView.gameObject.SetActive(false);
+        else
+        {
+            PileView.gameObject.SetActive(false);
+        }
 
         Debug.Log("Collected cards: " + Pile);
         Pile.Clear();
