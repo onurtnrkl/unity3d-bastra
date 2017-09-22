@@ -17,7 +17,7 @@ public sealed class PlayerCardView : CardView, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(OnClick != null)
+        if (OnClick != null)
         {
             OnClick();
         }

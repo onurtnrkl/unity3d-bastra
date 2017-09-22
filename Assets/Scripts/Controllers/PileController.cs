@@ -13,9 +13,9 @@ using UnityEngine;
 public sealed class PileController : MonoBehaviour, ICardController
 {
     public Pile Pile { get; private set; }
+    public CardView PileView;
 
-    private CardView pileView;
-    private GameObject faceDownPile;
+    private CardView faceDownPileView;
     private AudioClip bastraClip;
     private AudioClip collectClip;
 
@@ -25,26 +25,29 @@ public sealed class PileController : MonoBehaviour, ICardController
 
         bastraClip = Resources.Load<AudioClip>("Sounds/Bastra");
         collectClip = Resources.Load<AudioClip>("Sounds/Collect");
-        pileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
-        faceDownPile = Instantiate(cardPrefab, transform);
+        PileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
+        faceDownPileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
     }
 
     public void Restart()
     {
         Pile = new Pile();
 
-        faceDownPile.SetActive(true);
+        faceDownPileView.SetActive(true);
     }
 
     public void AddCard(Card card)
     {
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
 
-        pileView.SetSprite(sprite);
+        PileView.SetSprite(sprite);
 
         Pile.AddCard(card);
 
-        if (!pileView.gameObject.activeInHierarchy) pileView.SetActive(true);
+        if (!PileView.gameObject.activeInHierarchy)
+        {
+            PileView.SetActive(true);
+        } 
     }
 
     public byte Collect(Card card)
@@ -63,7 +66,7 @@ public sealed class PileController : MonoBehaviour, ICardController
             }
 
             SoundManager.Instance.PlaySingleClip(bastraClip);
-            Debug.Log("Bastra: " + card.Rank);
+            Debug.Log("Bastra!");
         }
         else
         {
@@ -73,14 +76,18 @@ public sealed class PileController : MonoBehaviour, ICardController
             SoundManager.Instance.PlaySingleClip(collectClip);
         }
 
-        if (faceDownPile.activeInHierarchy)
+        //PileView.MoveTo(target.position);
+
+        if (faceDownPileView.gameObject.activeInHierarchy)
         {
-            faceDownPile.SetActive(false);
+            faceDownPileView.gameObject.SetActive(false);
+            //faceDownPileView.MoveTo(target.position);
             //TODO: Show taken cards.
         }
 
+        PileView.gameObject.SetActive(false);
+
         Debug.Log("Collected cards: " + Pile);
-        pileView.SetActive(false);
         Pile.Clear();
 
         return score;

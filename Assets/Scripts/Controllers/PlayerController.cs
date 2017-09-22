@@ -15,8 +15,7 @@ using UnityEngine.UI;
 public sealed class PlayerController : MonoBehaviour, ICardController
 {
     private PileController pileController;
-    private ComputerController computerController;
-    private Hand hand;
+    public Hand Hand;
     private List<PlayerCardView> cardViews;
     private Text scoreText;
 
@@ -27,7 +26,6 @@ public sealed class PlayerController : MonoBehaviour, ICardController
     public void Init()
     {
         pileController = GameManager.Instance.PileController;
-        computerController = GameManager.Instance.ComputerController;
 
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         Transform handGroup = transform.GetChild(0);
@@ -47,7 +45,7 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        hand = new Hand();
+        Hand = new Hand();
 
         CollectedCards = 0;
 
@@ -59,22 +57,22 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
     public void AddCard(Card card)
     {
-        int index = hand.Count();
+        int index = Hand.Count();
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
         PlayerCardView cardView = cardViews[index];
 
-        cardView.OnClick = () => OnPlaceCard(card, index);
+        cardView.OnEndMove = () => OnPlaceCard(card);
+        cardView.OnClick = () => OnClick(card, cardView);
         cardView.SetSprite(sprite);
         cardView.SetActive(true);
 
-        hand.AddCard(card);
+        Hand.AddCard(card);
     }
 
-    private void OnPlaceCard(Card card, int index)
+    private void OnPlaceCard(Card card)
     {
-        hand.RemoveCard(card);
-        cardViews[index].SetActive(false);
-        Debug.Log("Player played: " + card);
+        Hand.RemoveCard(card);
+        Debug.Log("Player Played: " + card);
 
         if (pileController.Pile.CanCollected(card))
         {
@@ -89,11 +87,17 @@ public sealed class PlayerController : MonoBehaviour, ICardController
             pileController.AddCard(card);
         }
 
-        GameManager.Instance.Move++;
+        GameManager.Instance.EndTurn();
+    }
 
-        computerController.Play();
-
-        if (hand.Count() == 0) GameManager.Instance.DealCards();
+    private void OnClick(Card card, CardView cardView)
+    {
+        if(GameManager.Instance.PlayerTurn)
+        {            
+            GameManager.Instance.PlayerTurn = false;
+            Vector2 position = GameManager.Instance.PileController.PileView.transform.position;
+            cardView.MoveTo(position);
+        }
     }
 
     public void AddScore(byte score)
@@ -110,6 +114,6 @@ public sealed class PlayerController : MonoBehaviour, ICardController
 
     public void PrintLog()
     {
-        Debug.Log("Player Hand: " + hand);
+        Debug.Log("Player Hand: " + Hand);
     }
 }

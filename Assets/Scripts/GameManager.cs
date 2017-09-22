@@ -26,6 +26,8 @@ public sealed class GameManager : MonoBehaviour
 
     [HideInInspector]
     public byte Move;
+    [HideInInspector]
+    public bool PlayerTurn;
 
     private void Awake()
     {
@@ -71,6 +73,7 @@ public sealed class GameManager : MonoBehaviour
         deck = new Deck();
         round++;
         Move = 1;
+        PlayerTurn = true;
 
         PileController.Restart();
         PlayerController.Restart();
@@ -106,6 +109,32 @@ public sealed class GameManager : MonoBehaviour
         }
     }
 
+    public void EndTurn()
+    {
+        Move++;
+
+        if (PlayerTurn)
+        {
+            Debug.Log("Player Turn");
+
+            if (PlayerController.Hand.Count() == 0)
+            {
+                DealCards();
+            }
+        }
+        else
+        {
+            Debug.Log("Computer Turn");
+
+            if (ComputerController.Hand.Count() == 0)
+            {
+                DealCards();
+            }
+
+            ComputerController.Play();
+        }
+    }
+
     public void DealCards()
     {
         if (deck.Count() == 0)
@@ -121,7 +150,7 @@ public sealed class GameManager : MonoBehaviour
             }
 
             Debug.LogFormat("Remaining Cards: {0}", deck.Count());
-        }        
+        }
     }
 
     public void PrintLog()

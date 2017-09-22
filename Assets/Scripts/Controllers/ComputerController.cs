@@ -15,11 +15,14 @@ using UnityEngine.UI;
 public sealed class ComputerController : MonoBehaviour, ICardController
 {
     private PileController pileController;
-    private ComputerHand hand;
-    private List<GameObject> cardViews;
+    public ComputerHand Hand;
+    private List<CardView> cardViews;
+    private Dictionary<Card, int> viewIndex;
     private Text scoreText;
 
     public byte Score { get; private set; }
+
+    [HideInInspector]
     public int CollectedCards;
 
     public void Init()
@@ -32,11 +35,12 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
         scoreText = scoreGroup.GetChild(1).GetComponent<Text>();
 
-        cardViews = new List<GameObject>();
+        cardViews = new List<CardView>();
+        viewIndex = new Dictionary<Card, int>();
 
         for (byte i = 0; i < 4; i++)
         {
-            GameObject cardView = Instantiate(cardPrefab, handGroup);
+            CardView cardView = Instantiate(cardPrefab, handGroup).AddComponent<CardView>();
 
             cardViews.Add(cardView);
         }
@@ -44,7 +48,9 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void Restart()
     {
-        hand = new ComputerHand();
+        Hand = new ComputerHand();
+
+        CollectedCards = 0;
 
         for (byte i = 0; i < 4; i++)
         {
@@ -54,41 +60,44 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void AddCard(Card card)
     {
-        int index = hand.Count();
-        GameObject cardView = cardViews[index];
+        int index = Hand.Count();
+        CardView cardView = cardViews[index];
 
+        cardView.OnEndMove = () => PlayCard(card);
+        cardView.SetSprite(SpriteManager.Instance.GetSprite("Cover"));
         cardView.SetActive(true);
 
-        hand.AddCard(card);
+        Hand.AddCard(card);
+        viewIndex.Add(card, index);
     }
 
     public void Play()
     {
-        //TODO: Computer AI
         Card card;
 
         if (pileController.Pile.IsEmpty())
         {
-            card = hand.GetLowPointCard();
+            card = Hand.GetLowPointCard();
         }
         else
         {
             Card topCard = pileController.Pile.TopCard();
-            card = hand.GetBestCard(topCard);
+            card = Hand.GetBestCard(topCard);
         }
 
-        PlayCard(card);
+        Sprite sprite = SpriteManager.Instance.GetSprite(card);
+        Vector2 position = GameManager.Instance.PileController.PileView.transform.position;
+        int index = viewIndex[card];
 
-        GameManager.Instance.Move++;
+        cardViews[index].SetSprite(sprite);
+        cardViews[index].MoveTo(position);
+        viewIndex.Remove(card);
     }
 
     private void PlayCard(Card card)
     {
-        int index = hand.Count() - 1;
-
-        hand.RemoveCard(card);
-        cardViews[index].SetActive(false);
-        Debug.Log("Computer played: " + card);
+        Hand.RemoveCard(card);
+        Debug.Log("Computer Played: " + card);
 
         if (pileController.Pile.CanCollected(card))
         {
@@ -102,6 +111,9 @@ public sealed class ComputerController : MonoBehaviour, ICardController
         {
             pileController.AddCard(card);
         }
+
+        GameManager.Instance.PlayerTurn = true;
+        GameManager.Instance.EndTurn();
     }
 
     public void AddScore(byte score)
@@ -118,6 +130,6 @@ public sealed class ComputerController : MonoBehaviour, ICardController
 
     public void PrintLog()
     {
-        Debug.Log("Computer Hand: " + hand);
+        Debug.Log("Computer Hand: " + Hand);
     }
 }
