@@ -10,6 +10,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public sealed class SpriteManager
 {
@@ -26,15 +27,16 @@ public sealed class SpriteManager
 
     private void LoadAll()
     {
-        Sprite[] resources = Resources.LoadAll<Sprite>("Sprites");
-        int lenght = resources.Length;
+        SpriteAtlas atlas = Resources.Load<SpriteAtlas>("Sprites/Cards");
+        Sprite[] sprites = new Sprite[atlas.spriteCount];
+        atlas.GetSprites(sprites);
+        int lenght = sprites.Length;
 
         for (int i = 0; i < lenght; i++)
         {
-            Sprite sprite = resources[i];
-            string name = sprite.name;
-
-            sprites.Add(name, sprite);
+            Sprite sprite = sprites[i];
+            string name = sprite.name.Replace("(Clone)", string.Empty);
+            this.sprites.Add(name, sprite);
         }
     }
 
@@ -55,6 +57,6 @@ public sealed class SpriteManager
     /// <returns></returns>
     public Sprite GetSprite(Card card)
     {
-        return sprites[card.ToString()];
+        return GetSprite(card.ToString());
     }
 }
