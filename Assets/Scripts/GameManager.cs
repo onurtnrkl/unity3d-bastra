@@ -56,7 +56,7 @@ public sealed class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         menuManager.Init();
-        PileController.Init();
+        PileController.Initialize();
         PlayerController.Initialize();
         ComputerController.Initialize();
     }
@@ -68,9 +68,9 @@ public sealed class GameManager : MonoBehaviour
         Move = 1;
         IsPlayerTurn = true;
 
-        PileController.Restart();
-        PlayerController.Restart();
-        ComputerController.Restart();
+        PileController.OnRoundStart();
+        PlayerController.OnRoundStart();
+        ComputerController.OnRoundStart();
 
         for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
 

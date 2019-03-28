@@ -26,6 +26,8 @@ public sealed class PlayerController : PlayerControllerBase
     public override void Initialize()
     {
         base.Initialize();
+        player = new Player();
+        ResetScore();
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
 
         cardViews = new List<PlayerCardView>();
@@ -38,9 +40,9 @@ public sealed class PlayerController : PlayerControllerBase
         }
     }
 
-    public override void Restart()
+    public override void OnRoundStart()
     {
-        player = new Player();
+        base.OnRoundStart();
 
         for (byte i = 0; i < 4; i++)
         {

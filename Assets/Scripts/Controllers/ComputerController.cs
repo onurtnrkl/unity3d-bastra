@@ -21,6 +21,9 @@ public sealed class ComputerController : PlayerControllerBase
     public override void Initialize()
     {
         base.Initialize();
+        player = new Computer(pileController.Pile);
+        Computer = (Computer)player;
+        ResetScore();
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         cardViews = new List<CardView>();
         viewIndex = new Dictionary<Card, int>();
@@ -32,10 +35,9 @@ public sealed class ComputerController : PlayerControllerBase
         }
     }
 
-    public override void Restart()
+    public override void OnRoundStart()
     {
-        player = new Computer(pileController.Pile);
-        Computer = (Computer)player;
+        base.OnRoundStart();
 
         for (byte i = 0; i < 4; i++)
         {

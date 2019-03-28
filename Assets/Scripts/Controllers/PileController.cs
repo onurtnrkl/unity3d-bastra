@@ -10,7 +10,7 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using UnityEngine;
 
-public sealed class PileController : MonoBehaviour, ICardController
+public sealed class PileController : MonoBehaviour
 {
     public CardView PileView;
 
@@ -20,8 +20,9 @@ public sealed class PileController : MonoBehaviour, ICardController
 
     public Pile Pile { get; private set; }
 
-    public void Init()
+    public void Initialize()
     {
+        Pile = new Pile();
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
 
         bastraClip = Resources.Load<AudioClip>("Sounds/Bastra");
@@ -30,9 +31,9 @@ public sealed class PileController : MonoBehaviour, ICardController
         faceDownPileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
     }
 
-    public void Restart()
+    public void OnRoundStart()
     {
-        Pile = new Pile();
+        Pile.Clear();
         faceDownPileView.SetActive(true);
     }
 

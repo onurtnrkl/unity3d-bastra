@@ -63,7 +63,10 @@ public abstract class PlayerControllerBase : MonoBehaviour
         GameManager.Instance.NextTurn();
     }
 
-    public abstract void Restart();
+    public virtual void OnRoundStart()
+    {
+        player.Hand = new Hand();
+    }
 
     public abstract void PrintLog();
 
