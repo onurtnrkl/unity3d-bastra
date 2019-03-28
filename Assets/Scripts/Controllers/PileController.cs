@@ -12,12 +12,13 @@ using UnityEngine;
 
 public sealed class PileController : MonoBehaviour, ICardController
 {
-    public Pile Pile { get; private set; }
     public CardView PileView;
 
     private CardView faceDownPileView;
     private AudioClip bastraClip;
     private AudioClip collectClip;
+
+    public Pile Pile { get; private set; }
 
     public void Init()
     {
@@ -32,9 +33,10 @@ public sealed class PileController : MonoBehaviour, ICardController
     public void Restart()
     {
         Pile = new Pile();
-
         faceDownPileView.SetActive(true);
     }
+
+    //TODO: Add PlayCard Method.
 
     public void AddCard(Card card)
     {

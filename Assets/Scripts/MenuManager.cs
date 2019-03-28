@@ -31,7 +31,6 @@ public class MenuManager : MonoBehaviour
     private void StartGame()
     {
         gameObject.SetActive(false);
-        GameManager.Instance.Restart();
         GameManager.Instance.StartRound();
     }
 

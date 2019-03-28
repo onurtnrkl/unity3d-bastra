@@ -182,9 +182,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 0
 --- !u!222 &25507498
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -713,7 +711,6 @@ GameObject:
   m_Component:
   - component: {fileID: 599063732}
   - component: {fileID: 599063731}
-  - component: {fileID: 599063730}
   - component: {fileID: 599063729}
   - component: {fileID: 599063728}
   m_Layer: 0
@@ -732,14 +729,6 @@ AudioListener:
   m_GameObject: {fileID: 599063727}
   m_Enabled: 1
 --- !u!124 &599063729
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 599063727}
-  m_Enabled: 1
---- !u!92 &599063730
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1516,7 +1505,6 @@ MonoBehaviour:
   PileController: {fileID: 1299116365}
   menuManager: {fileID: 128046506}
   Move: 0
-  PlayerTurn: 0
 --- !u!1 &1251005519
 GameObject:
   m_ObjectHideFlags: 0
@@ -2224,7 +2212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585386f9ce6ad1b479252d08a4b35edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollectedCards: 0
 --- !u!1 &2079308866
 GameObject:
   m_ObjectHideFlags: 0

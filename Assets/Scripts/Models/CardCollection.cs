@@ -15,9 +15,25 @@ public abstract class CardCollection
 {
     protected List<Card> cards;
 
+    public int Count
+    {
+        get
+        {
+            return cards.Count;
+        }
+    }
+
     public CardCollection()
     {
         cards = new List<Card>();
+    }
+
+    public Card this[int index]
+    {
+        get
+        {
+            return cards[index];
+        }
     }
 
     public void AddCard(Card card)
@@ -30,14 +46,8 @@ public abstract class CardCollection
         cards.Remove(card);
     }
 
-    public int Count()
-    {
-        return cards.Count;
-    }
-
     public override string ToString()
     {
-        //FIXME: Sometimes returns Empty.
         StringBuilder stringBuilder = new StringBuilder();
 
         int length = cards.Count - 1;

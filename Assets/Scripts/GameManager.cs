@@ -12,11 +12,13 @@ using UnityEngine;
 
 public sealed class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
     public PlayerController PlayerController;
     public ComputerController ComputerController;
     public PileController PileController;
+
+    public static GameManager Instance { get; private set; }
+
+    public bool IsPlayerTurn { get; private set; }
 
     [SerializeField]
     private MenuManager menuManager;
@@ -26,8 +28,6 @@ public sealed class GameManager : MonoBehaviour
 
     [HideInInspector]
     public byte Move;
-    [HideInInspector]
-    public bool PlayerTurn;
 
     private void Awake()
     {
@@ -57,15 +57,8 @@ public sealed class GameManager : MonoBehaviour
 
         menuManager.Init();
         PileController.Init();
-        PlayerController.Init();
-        ComputerController.Init();
-    }
-
-    public void Restart()
-    {
-        round = 0;
-        PlayerController.ResetScore();
-        ComputerController.ResetScore();
+        PlayerController.Initialize();
+        ComputerController.Initialize();
     }
 
     public void StartRound()
@@ -73,7 +66,7 @@ public sealed class GameManager : MonoBehaviour
         deck = new Deck();
         round++;
         Move = 1;
-        PlayerTurn = true;
+        IsPlayerTurn = true;
 
         PileController.Restart();
         PlayerController.Restart();
@@ -86,17 +79,20 @@ public sealed class GameManager : MonoBehaviour
 
     private void EndRound()
     {
-        //Collect remaining cards from last turn;
-        ComputerController.CollectedCards += PileController.Pile.Count();
+        //Collects remaining cards from last turn;
+        Computer computer = ComputerController.Computer;
+        Player player = PlayerController.Player;
+
+        computer.CollectedCards += PileController.Pile.Count;
         ComputerController.AddScore(PileController.Pile.GetScore());
 
-        if (PlayerController.Score >= 101 || ComputerController.Score >= 101)
+        if (player.Score >= 101 || computer.Score >= 101)
         {
-            menuManager.EndGame(PlayerController.Score, ComputerController.Score);
+            menuManager.EndGame(player.Score, computer.Score);
         }
         else
         {
-            if (ComputerController.CollectedCards > PlayerController.CollectedCards)
+            if (computer.CollectedCards > player.CollectedCards)
             {
                 ComputerController.AddScore(3);
             }
@@ -109,15 +105,16 @@ public sealed class GameManager : MonoBehaviour
         }
     }
 
-    public void EndTurn()
+    public void NextTurn()
     {
+        IsPlayerTurn = !IsPlayerTurn;
         Move++;
 
-        if (PlayerTurn)
+        if (IsPlayerTurn)
         {
             Debug.Log("Player Turn");
 
-            if (PlayerController.Hand.Count() == 0)
+            if (PlayerController.Player.Hand.Count == 0)
             {
                 DealCards();
             }
@@ -126,7 +123,7 @@ public sealed class GameManager : MonoBehaviour
         {
             Debug.Log("Computer Turn");
 
-            if (ComputerController.Hand.Count() == 0)
+            if (ComputerController.Computer.Hand.Count == 0)
             {
                 DealCards();
             }
@@ -137,7 +134,7 @@ public sealed class GameManager : MonoBehaviour
 
     public void DealCards()
     {
-        if (deck.Count() == 0)
+        if (deck.Count == 0)
         {
             EndRound();
         }
@@ -149,7 +146,7 @@ public sealed class GameManager : MonoBehaviour
                 ComputerController.AddCard(deck.DrawCard());
             }
 
-            Debug.LogFormat("Remaining Cards: {0}", deck.Count());
+            Debug.LogFormat("Remaining Cards: {0}", deck.Count);
         }
     }
 

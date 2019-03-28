@@ -9,7 +9,6 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 #endregion
 
 using System.Linq;
-using UnityEngine;
 
 using Random = System.Random;
 
@@ -47,11 +46,6 @@ public sealed class Deck : CardCollection
     {
         Random random = new Random();
         cards = cards.OrderBy(x => random.Next()).ToList();
-
-        //for (byte i = 0; i < cards.Count; i++)
-        //{
-        //    Debug.Log(cards[i]);
-        //}
     }
 
     /// <summary>

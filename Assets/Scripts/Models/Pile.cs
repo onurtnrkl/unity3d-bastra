@@ -12,9 +12,11 @@ using System.Linq;
 
 public sealed class Pile : CardCollection
 {
+    public bool IsBusy { get; set; }
+
     public Pile() : base()
     {
-        
+        IsBusy = false;
     }
 
     //public Card[] TakeCards()
@@ -24,6 +26,7 @@ public sealed class Pile : CardCollection
 
     //    return takenCards;
     //}
+
     public void Clear()
     {
         cards.Clear();
@@ -31,7 +34,7 @@ public sealed class Pile : CardCollection
 
     public Card TopCard()
     {
-        return cards[Count() - 1];
+        return cards[Count - 1];
     }
 
     public bool IsEmpty()
@@ -42,7 +45,7 @@ public sealed class Pile : CardCollection
 
     public bool IsBastra(Card card)
     {
-        if (Count() == 1)
+        if (Count == 1)
         {
             if (TopCard().Rank == card.Rank)
             {
