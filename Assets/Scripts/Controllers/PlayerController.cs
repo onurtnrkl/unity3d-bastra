@@ -8,13 +8,10 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class PlayerController : PlayerControllerBase
 {
-    private List<PlayerCardView> cardViews;
-
     public Player Player
     {
         get
@@ -27,55 +24,29 @@ public sealed class PlayerController : PlayerControllerBase
     {
         base.Initialize();
         player = new Player();
-        ResetScore();
-        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-
-        cardViews = new List<PlayerCardView>();
-
-        for (byte i = 0; i < 4; i++)
-        {
-            PlayerCardView cardView = Instantiate(cardPrefab, handGroup).AddComponent<PlayerCardView>();
-
-            cardViews.Add(cardView);
-        }
-    }
-
-    public override void OnRoundStart()
-    {
-        base.OnRoundStart();
-
-        for (byte i = 0; i < 4; i++)
-        {
-            cardViews[i].SetActive(false);
-        }
+        playerView.HandView.Initialize();
     }
 
     public override void AddCard(Card card)
     {
-        int index = player.Hand.Count;
-        Sprite sprite = SpriteManager.Instance.GetSprite(card);
-        PlayerCardView cardView = cardViews[index];
-
-        cardView.OnEndMove = () => PlayCard(card);
-        cardView.OnClick = () => OnClick(cardView);
-        cardView.SetSprite(sprite);
-        cardView.SetActive(true);
-
-        player.Hand.AddCard(card);
+        base.AddCard(card);
+        PlayerHandView handView = (PlayerHandView)playerView.HandView;
+        handView.AddCard(card, () => CollectCard(card), () => OnClicked(card));
     }
 
-    protected override void PlayCard(Card card)
+    protected override void CollectCard(Card card)
     {
-        base.PlayCard(card);
+        base.CollectCard(card);
         Debug.Log("Player Played: " + card);
     }
 
-    private void OnClick(CardView cardView)
+    private void OnClicked(Card card)
     {
-        if(GameManager.Instance.IsPlayerTurn && !pileController.Pile.IsBusy)
+        if (GameManager.Instance.IsPlayerTurn && !pileController.Pile.IsBusy)
         {
+            CardView cardView = playerView.HandView[card];
             pileController.Pile.IsBusy = true;
-            Vector2 position = GameManager.Instance.PileController.PileView.transform.position;
+            Vector2 position = pileController.PileView.transform.position;
             cardView.MoveTo(position);
         }
     }

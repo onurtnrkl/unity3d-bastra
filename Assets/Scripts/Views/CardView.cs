@@ -12,7 +12,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Graphic))]
 public class CardView : MonoBehaviour
 {
     public Action OnEndMove

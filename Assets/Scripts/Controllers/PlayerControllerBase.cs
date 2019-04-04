@@ -8,27 +8,22 @@
 #endregion
 
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class PlayerControllerBase : MonoBehaviour
 {
     protected Player player;
     protected PileController pileController;
-    protected Text scoreText;
-    protected Transform handGroup;
+    protected PlayerView playerView;
 
     public virtual void Initialize()
     {
         pileController = GameManager.Instance.PileController;
-        handGroup = transform.GetChild(0);
-        Transform scoreGroup = transform.GetChild(1);
-        scoreText = scoreGroup.GetChild(1).GetComponent<Text>();
     }
 
     private void UpdateScore(int score)
     {
         player.Score = score;
-        scoreText.text = score.ToString();
+        //scoreText.text = score.ToString();
     }
 
     public void AddScore(int amount)
@@ -42,11 +37,14 @@ public abstract class PlayerControllerBase : MonoBehaviour
         UpdateScore(0);
     }
 
-    protected virtual void PlayCard(Card card)
+    //TODO: Some behaviours can move to PileController
+    protected virtual void CollectCard(Card card)
     {
         Hand hand = player.Hand;
+        HandView handView = playerView.HandView;
         Pile pile = pileController.Pile;
         hand.RemoveCard(card);
+        handView.RemoveCard(card);
 
         if (pile.CanCollected(card))
         {
@@ -63,12 +61,16 @@ public abstract class PlayerControllerBase : MonoBehaviour
         GameManager.Instance.NextTurn();
     }
 
+    public virtual void AddCard(Card card)
+    {
+        player.Hand.AddCard(card);
+    }
+
     public virtual void OnRoundStart()
     {
+        playerView.HandView.Clear();
         player.Hand = new Hand();
     }
 
     public abstract void PrintLog();
-
-    public abstract void AddCard(Card card);
 }
