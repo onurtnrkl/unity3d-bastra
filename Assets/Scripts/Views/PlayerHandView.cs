@@ -11,7 +11,7 @@ public class PlayerHandView : HandView
     public void AddCard(Card card, Action onMoveEnded, Action onClicked)
     {
         PlayerCardView cardView = (PlayerCardView)pool.GetObject();
-        cardView.OnEndMove = onMoveEnded;
+        cardView.OnMoveEnded = onMoveEnded;
         cardView.OnClicked = onClicked;
         cardView.SetSprite(SpriteManager.Instance.GetSprite(card));
         cardView.SetActive(true);

@@ -13,30 +13,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Graphic))]
-public class CardView : MonoBehaviour
+public class CardView : MonoBehaviour, IMovable
 {
-    public Action OnEndMove
-    {
-        set
-        {
-            onEndMove = () => SetActive(false);
-            onEndMove += value;       
-        }
-    }
-
     private Image image;
     private LayoutElement layoutElement;
     private Vector2 targetPosition;
     private bool isMoving;
-    private Action onEndMove;
+    private Action onMoveEnded;
 
     private const float speed = 10;
+
+    public Action OnMoveEnded
+    {
+        set
+        {
+            onMoveEnded = () => SetActive(false);
+            onMoveEnded += value;
+        }
+    }
 
     private void Awake()
     {
         image = GetComponent<Image>();
         layoutElement = GetComponent<LayoutElement>();
-        onEndMove = () => SetActive(false);
+        onMoveEnded = () => SetActive(false);
     }
 
     private void Update()
@@ -51,9 +51,9 @@ public class CardView : MonoBehaviour
 
             if (distance < 1f)
             {
-                if (onEndMove != null)
+                if (onMoveEnded != null)
                 {
-                    onEndMove();
+                    onMoveEnded();
                 }
 
                 isMoving = false;

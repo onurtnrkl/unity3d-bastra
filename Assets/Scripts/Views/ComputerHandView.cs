@@ -11,7 +11,7 @@ public class ComputerHandView : HandView
     public void AddCard(Card card, Action onMoveEnded)
     {
         CardView cardView = pool.GetObject();
-        cardView.OnEndMove = onMoveEnded;
+        cardView.OnMoveEnded = onMoveEnded;
         cardView.SetSprite(SpriteManager.Instance.GetSprite("Cover"));
         cardView.SetActive(true);
         cardViews.Add(card, cardView);

@@ -11,11 +11,11 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 using System;
 using UnityEngine.EventSystems;
 
-public sealed class PlayerCardView : CardView, IPointerDownHandler
+public sealed class PlayerCardView : CardView, IClickable
 {
-    public Action OnClicked;
+    public Action OnClicked { private get; set; }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (OnClicked != null)
         {
