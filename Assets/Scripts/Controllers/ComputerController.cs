@@ -12,28 +12,25 @@ using UnityEngine;
 
 public sealed class ComputerController : PlayerControllerBase
 {
-    public Computer Computer { get; private set; }
+    private Computer computer;
 
-    public override void Initialize()
+    public ComputerController(Computer computer, ComputerView computerView) : base(computer, computerView)
     {
-        base.Initialize();
-        player = new Computer(pileController.Pile);
-        Computer = (Computer)player;
-        playerView.HandView.Initialize();
+        this.computer = computer;
     }
 
     public override void AddCard(Card card)
     {
         base.AddCard(card);
-        ComputerHandView handView = (ComputerHandView)playerView.HandView;
+        ComputerHandView handView = (ComputerHandView)PlayerView.HandView;
         handView.AddCard(card, () => CollectCard(card));
     }
 
     public void Play()
     {
         pileController.Pile.IsBusy = true;
-        Card card = Computer.FindBestCard();
-        CardView cardView = playerView.HandView[card];
+        Card card = computer.FindBestCard();
+        CardView cardView = PlayerView.HandView[card];
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
         Vector2 position = GameManager.Instance.PileController.PileView.transform.position;
         cardView.SetSprite(sprite);
@@ -42,7 +39,7 @@ public sealed class ComputerController : PlayerControllerBase
 
     public override void PrintLog()
     {
-        Debug.Log("Computer Hand: " + Computer.Hand);
+        Debug.Log("Computer Hand: " + computer.Hand);
     }
 
     protected override void CollectCard(Card card)

@@ -12,25 +12,15 @@ using UnityEngine;
 
 public sealed class PlayerController : PlayerControllerBase
 {
-    public Player Player
+    public PlayerController(Player player, PlayerView playerView) : base(player, playerView)
     {
-        get
-        {
-            return player;
-        }
-    }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        player = new Player();
-        playerView.HandView.Initialize();
     }
 
     public override void AddCard(Card card)
     {
         base.AddCard(card);
-        PlayerHandView handView = (PlayerHandView)playerView.HandView;
+        PlayerHandView handView = (PlayerHandView)PlayerView.HandView;
         handView.AddCard(card, () => CollectCard(card), () => OnClicked(card));
     }
 
@@ -44,7 +34,7 @@ public sealed class PlayerController : PlayerControllerBase
     {
         if (GameManager.Instance.IsPlayerTurn && !pileController.Pile.IsBusy)
         {
-            CardView cardView = playerView.HandView[card];
+            CardView cardView = PlayerView.HandView[card];
             pileController.Pile.IsBusy = true;
             Vector2 position = pileController.PileView.transform.position;
             cardView.MoveTo(position);
@@ -53,6 +43,6 @@ public sealed class PlayerController : PlayerControllerBase
 
     public override void PrintLog()
     {
-        Debug.Log("Player Hand: " + player.Hand);
+        Debug.Log("Player Hand: " + Player.Hand);
     }
 }

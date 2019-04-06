@@ -7,28 +7,30 @@
 // ====================================================
 #endregion
 
-using UnityEngine;
-
-public abstract class PlayerControllerBase : MonoBehaviour
+public abstract class PlayerControllerBase
 {
-    protected Player player;
     protected PileController pileController;
-    protected PlayerView playerView;
 
-    public virtual void Initialize()
+    public Player Player { get; private set; }
+
+    public PlayerBaseView PlayerView { get; private set; }
+
+    public PlayerControllerBase(Player player, PlayerBaseView playerView)
     {
         pileController = GameManager.Instance.PileController;
+        Player = player;
+        PlayerView = playerView;
     }
 
     private void UpdateScore(int score)
     {
-        player.Score = score;
+        Player.Score = score;
         //scoreText.text = score.ToString();
     }
 
     public void AddScore(int amount)
     {
-        int score = player.Score + amount;
+        int score = Player.Score + amount;
         UpdateScore(score);
     }
 
@@ -40,15 +42,15 @@ public abstract class PlayerControllerBase : MonoBehaviour
     //TODO: Some behaviours can move to PileController
     protected virtual void CollectCard(Card card)
     {
-        Hand hand = player.Hand;
-        HandView handView = playerView.HandView;
+        Hand hand = Player.Hand;
+        HandView handView = PlayerView.HandView;
         Pile pile = pileController.Pile;
         hand.RemoveCard(card);
         handView.RemoveCard(card);
 
         if (pile.CanCollected(card))
         {
-            player.CollectedCards += pile.Count;
+            Player.CollectedCards += pile.Count;
             byte collectScore = pileController.Collect(card);
             AddScore(collectScore);
         }
@@ -63,13 +65,13 @@ public abstract class PlayerControllerBase : MonoBehaviour
 
     public virtual void AddCard(Card card)
     {
-        player.Hand.AddCard(card);
+        Player.Hand.AddCard(card);
     }
 
     public virtual void OnRoundStart()
     {
-        playerView.HandView.Clear();
-        player.Hand = new Hand();
+        PlayerView.HandView.Clear();
+        Player.Hand = new Hand();
     }
 
     public abstract void PrintLog();

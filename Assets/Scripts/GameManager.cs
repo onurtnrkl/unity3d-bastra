@@ -12,8 +12,8 @@ using UnityEngine;
 
 public sealed class GameManager : MonoBehaviour
 {
-    public PlayerController PlayerController;
-    public ComputerController ComputerController;
+    private PlayerController playerController;
+    private ComputerController computerController;
     public PileController PileController;
 
     public static GameManager Instance { get; private set; }
@@ -35,7 +35,7 @@ public sealed class GameManager : MonoBehaviour
         {
             Instance = this;
 
-            Init();
+            Initialize();
         }
         else
         {
@@ -51,14 +51,15 @@ public sealed class GameManager : MonoBehaviour
         }
     }
 
-    private void Init()
+    private void Initialize()
     {
         DontDestroyOnLoad(gameObject);
 
         menuManager.Init();
         PileController.Initialize();
-        PlayerController.Initialize();
-        ComputerController.Initialize();
+        Pile pile = PileController.Pile;
+        playerController = new PlayerController(new Player(), FindObjectOfType<PlayerView>());
+        computerController = new ComputerController(new Computer(pile), FindObjectOfType<ComputerView>());
     }
 
     public void StartRound()
@@ -69,8 +70,8 @@ public sealed class GameManager : MonoBehaviour
         IsPlayerTurn = true;
 
         PileController.OnRoundStart();
-        PlayerController.OnRoundStart();
-        ComputerController.OnRoundStart();
+        playerController.OnRoundStart();
+        computerController.OnRoundStart();
 
         for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
 
@@ -80,11 +81,11 @@ public sealed class GameManager : MonoBehaviour
     private void EndRound()
     {
         //Collects remaining cards from last turn;
-        Computer computer = ComputerController.Computer;
-        Player player = PlayerController.Player;
+        Player computer = computerController.Player;
+        Player player = playerController.Player;
 
         computer.CollectedCards += PileController.Pile.Count;
-        ComputerController.AddScore(PileController.Pile.GetScore());
+        computerController.AddScore(PileController.Pile.GetScore());
 
         if (player.Score >= 101 || computer.Score >= 101)
         {
@@ -94,11 +95,11 @@ public sealed class GameManager : MonoBehaviour
         {
             if (computer.CollectedCards > player.CollectedCards)
             {
-                ComputerController.AddScore(3);
+                computerController.AddScore(3);
             }
             else
             {
-                PlayerController.AddScore(3);
+                computerController.AddScore(3);
             }
 
             StartRound();
@@ -114,7 +115,7 @@ public sealed class GameManager : MonoBehaviour
         {
             Debug.Log("Player Turn");
 
-            if (PlayerController.Player.Hand.Count == 0)
+            if (playerController.Player.Hand.Count == 0)
             {
                 DealCards();
             }
@@ -123,12 +124,12 @@ public sealed class GameManager : MonoBehaviour
         {
             Debug.Log("Computer Turn");
 
-            if (ComputerController.Computer.Hand.Count == 0)
+            if (computerController.Player.Hand.Count == 0)
             {
                 DealCards();
             }
 
-            ComputerController.Play();
+            computerController.Play();
         }
     }
 
@@ -142,8 +143,8 @@ public sealed class GameManager : MonoBehaviour
         {
             for (byte i = 0; i < 4; i++)
             {
-                PlayerController.AddCard(deck.DrawCard());
-                ComputerController.AddCard(deck.DrawCard());
+                playerController.AddCard(deck.DrawCard());
+                computerController.AddCard(deck.DrawCard());
             }
 
             Debug.LogFormat("Remaining Cards: {0}", deck.Count);
@@ -154,7 +155,7 @@ public sealed class GameManager : MonoBehaviour
     {
         Debug.LogFormat("Round: {0} | Move: {1}", round, Move);
         PileController.PrintLog();
-        PlayerController.PrintLog();
-        ComputerController.PrintLog();
+        playerController.PrintLog();
+        computerController.PrintLog();
     }
 }
