@@ -10,31 +10,28 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 
 using UnityEngine;
 
-public sealed class PileController : MonoBehaviour
-{
-    public CardView PileView;
-
-    private CardView faceDownPileView;
+public sealed class PileController
+{  
     private AudioClip bastraClip;
     private AudioClip collectClip;
 
     public Pile Pile { get; private set; }
 
-    public void Initialize()
+    public PileView PileView { get; private set; }
+
+    public PileController(Pile pile, PileView pileView)
     {
-        Pile = new Pile();
-        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+        Pile = pile;
+        PileView = pileView;
 
         bastraClip = Resources.Load<AudioClip>("Sounds/Bastra");
         collectClip = Resources.Load<AudioClip>("Sounds/Collect");
-        PileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
-        faceDownPileView = Instantiate(cardPrefab, transform).AddComponent<CardView>();
     }
 
     public void OnRoundStart()
     {
         Pile.Clear();
-        faceDownPileView.SetActive(true);
+        PileView.SecondPile.SetActive(true);
     }
 
     //TODO: Add PlayCard Method.
@@ -43,13 +40,13 @@ public sealed class PileController : MonoBehaviour
     {
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
 
-        PileView.SetSprite(sprite);
+        PileView.FirstPile.SetSprite(sprite);
 
         Pile.AddCard(card);
 
-        if (!PileView.gameObject.activeInHierarchy)
+        if (!PileView.FirstPile.gameObject.activeInHierarchy)
         {
-            PileView.SetActive(true);
+            PileView.FirstPile.SetActive(true);
         } 
     }
 
@@ -79,12 +76,12 @@ public sealed class PileController : MonoBehaviour
             SoundManager.Instance.PlaySingleClip(collectClip);
         }
 
-        if (faceDownPileView.gameObject.activeInHierarchy)
+        if (PileView.SecondPile.gameObject.activeInHierarchy)
         {
             Sprite sprite = SpriteManager.Instance.GetSprite("Clean");
 
-            faceDownPileView.gameObject.SetActive(false);
-            PileView.SetSprite(sprite);
+            PileView.SecondPile.gameObject.SetActive(false);
+            PileView.FirstPile.SetSprite(sprite);
 
             //Set Clean Texture to card.
             //faceDownPileView.MoveTo(target.position);
@@ -92,7 +89,7 @@ public sealed class PileController : MonoBehaviour
         }
         else
         {
-            PileView.gameObject.SetActive(false);
+            PileView.FirstPile.gameObject.SetActive(false);
         }
 
         Debug.Log("Collected cards: " + Pile);

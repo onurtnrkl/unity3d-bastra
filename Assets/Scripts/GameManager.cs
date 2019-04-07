@@ -14,20 +14,17 @@ public sealed class GameManager : MonoBehaviour
 {
     private PlayerController playerController;
     private ComputerController computerController;
-    public PileController PileController;
-
-    public static GameManager Instance { get; private set; }
-
-    public bool IsPlayerTurn { get; private set; }
-
-    [SerializeField]
     private MenuManager menuManager;
-
     private Deck deck;
     private byte round;
 
-    [HideInInspector]
-    public byte Move;
+    public PileController PileController { get; private set; }
+
+    public bool IsPlayerTurn { get; private set; }
+
+    public byte Move { get; set; }
+
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -53,13 +50,21 @@ public sealed class GameManager : MonoBehaviour
 
     private void Initialize()
     {
-        DontDestroyOnLoad(gameObject);
+        Transform canvas = FindObjectOfType<Canvas>().transform;
 
-        menuManager.Init();
-        PileController.Initialize();
-        Pile pile = PileController.Pile;
-        playerController = new PlayerController(new Player(), FindObjectOfType<PlayerView>());
-        computerController = new ComputerController(new Computer(pile), FindObjectOfType<ComputerView>());
+        Pile pile = new Pile();
+        PileView pileView = Instantiate(Resources.Load<PileView>("Prefabs/Pile"), canvas);
+        PileController = new PileController(pile, pileView);
+
+        Player player = new Player();
+        PlayerView playerView = Instantiate(Resources.Load<PlayerView>("Prefabs/Player"), canvas);
+        playerController = new PlayerController(player, playerView);
+
+        Computer computer = new Computer(pile);
+        ComputerView computerView = Instantiate(Resources.Load<ComputerView>("Prefabs/Computer"), canvas);
+        computerController = new ComputerController(computer, computerView);
+
+        menuManager = Instantiate(Resources.Load<MenuManager>("Prefabs/Menu"), canvas);
     }
 
     public void StartRound()

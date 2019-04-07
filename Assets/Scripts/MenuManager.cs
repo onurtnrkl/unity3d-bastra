@@ -19,7 +19,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text playerScore;
     [SerializeField] private Text computerScore;
 
-    public void Init()
+    private void Awake()
     {
         Button startButton = startMenu.GetComponentInChildren<Button>();
         Button restartButton = endMenu.GetComponentInChildren<Button>();

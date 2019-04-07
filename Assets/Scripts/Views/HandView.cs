@@ -23,7 +23,7 @@ public abstract class HandView : MonoBehaviour
         }
     }
 
-    public void Initialize()
+    private void Awake()
     {
         cardViews = new Dictionary<Card, CardView>();
         pool = new ObjectPool<CardView>(4);

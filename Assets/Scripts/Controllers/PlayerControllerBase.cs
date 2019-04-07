@@ -25,7 +25,7 @@ public abstract class PlayerControllerBase
     private void UpdateScore(int score)
     {
         Player.Score = score;
-        //scoreText.text = score.ToString();
+        PlayerView.ScoreText.text = score.ToString();
     }
 
     public void AddScore(int amount)

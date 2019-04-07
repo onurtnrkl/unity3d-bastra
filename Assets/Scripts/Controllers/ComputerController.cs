@@ -32,7 +32,7 @@ public sealed class ComputerController : PlayerControllerBase
         Card card = computer.FindBestCard();
         CardView cardView = PlayerView.HandView[card];
         Sprite sprite = SpriteManager.Instance.GetSprite(card);
-        Vector2 position = GameManager.Instance.PileController.PileView.transform.position;
+        Vector2 position = pileController.PileView.FirstPile.transform.position;
         cardView.SetSprite(sprite);
         cardView.MoveTo(position);
     }
