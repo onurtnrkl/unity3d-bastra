@@ -9,7 +9,6 @@ Copyright (c) 2017 Onur Tanrikulu. All rights reserved.
 #endregion
 
 using System.Linq;
-
 using Random = System.Random;
 
 public sealed class Deck : CardCollection

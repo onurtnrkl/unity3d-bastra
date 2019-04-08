@@ -11,15 +11,15 @@ public abstract class PlayerControllerBase
 {
     protected PileController pileController;
 
-    public Player Player { get; private set; }
+    public PlayerBase Player { get; private set; }
 
     public PlayerBaseView PlayerView { get; private set; }
 
-    public PlayerControllerBase(Player player, PlayerBaseView playerView)
+    public PlayerControllerBase(PlayerBase player, PlayerBaseView playerView, PileController pileController)
     {
-        pileController = GameManager.Instance.PileController;
         Player = player;
         PlayerView = playerView;
+        this.pileController = pileController;
     }
 
     private void UpdateScore(int score)
@@ -45,7 +45,7 @@ public abstract class PlayerControllerBase
         Hand hand = Player.Hand;
         HandView handView = PlayerView.HandView;
         Pile pile = pileController.Pile;
-        hand.RemoveCard(card);
+        hand.Remove(card);
         handView.RemoveCard(card);
 
         if (pile.CanCollected(card))
@@ -65,7 +65,7 @@ public abstract class PlayerControllerBase
 
     public virtual void AddCard(Card card)
     {
-        Player.Hand.AddCard(card);
+        Player.Hand.Add(card);
     }
 
     public virtual void OnRoundStart()
@@ -73,6 +73,8 @@ public abstract class PlayerControllerBase
         PlayerView.HandView.Clear();
         Player.Hand = new Hand();
     }
+
+    public abstract void MakeTurn();
 
     public abstract void PrintLog();
 }

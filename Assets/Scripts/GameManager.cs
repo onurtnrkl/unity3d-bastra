@@ -14,13 +14,11 @@ public sealed class GameManager : MonoBehaviour
 {
     private PlayerController playerController;
     private ComputerController computerController;
+    private PileController pileController;
+    private PlayerControllerBase turnPlayerController;
     private MenuManager menuManager;
     private Deck deck;
     private byte round;
-
-    public PileController PileController { get; private set; }
-
-    public bool IsPlayerTurn { get; private set; }
 
     public byte Move { get; set; }
 
@@ -54,15 +52,15 @@ public sealed class GameManager : MonoBehaviour
 
         Pile pile = new Pile();
         PileView pileView = Instantiate(Resources.Load<PileView>("Prefabs/Pile"), canvas);
-        PileController = new PileController(pile, pileView);
+        pileController = new PileController(pile, pileView);
 
         Player player = new Player();
         PlayerView playerView = Instantiate(Resources.Load<PlayerView>("Prefabs/Player"), canvas);
-        playerController = new PlayerController(player, playerView);
+        playerController = new PlayerController(player, playerView, pileController);
 
         Computer computer = new Computer(pile);
         ComputerView computerView = Instantiate(Resources.Load<ComputerView>("Prefabs/Computer"), canvas);
-        computerController = new ComputerController(computer, computerView);
+        computerController = new ComputerController(computer, computerView, pileController);
 
         menuManager = Instantiate(Resources.Load<MenuManager>("Prefabs/Menu"), canvas);
     }
@@ -72,13 +70,14 @@ public sealed class GameManager : MonoBehaviour
         deck = new Deck();
         round++;
         Move = 1;
-        IsPlayerTurn = true;
+        turnPlayerController = playerController;
+        turnPlayerController.MakeTurn();
 
-        PileController.OnRoundStart();
+        pileController.OnRoundStart();
         playerController.OnRoundStart();
         computerController.OnRoundStart();
 
-        for (byte i = 0; i < 4; i++) PileController.AddCard(deck.DrawCard());
+        for (byte i = 0; i < 4; i++) pileController.AddCard(deck.DrawCard());
 
         DealCards();
     }
@@ -86,11 +85,11 @@ public sealed class GameManager : MonoBehaviour
     private void EndRound()
     {
         //Collects remaining cards from last turn;
-        Player computer = computerController.Player;
-        Player player = playerController.Player;
+        PlayerBase computer = computerController.Player;
+        PlayerBase player = playerController.Player;
 
-        computer.CollectedCards += PileController.Pile.Count;
-        computerController.AddScore(PileController.Pile.GetScore());
+        computer.CollectedCards += pileController.Pile.Count;
+        computerController.AddScore(pileController.Pile.GetScore());
 
         if (player.Score >= 101 || computer.Score >= 101)
         {
@@ -104,38 +103,36 @@ public sealed class GameManager : MonoBehaviour
             }
             else
             {
-                computerController.AddScore(3);
+                playerController.AddScore(3);
             }
 
             StartRound();
         }
     }
 
-    public void NextTurn()
+    private void NextPlayer()
     {
-        IsPlayerTurn = !IsPlayerTurn;
-        Move++;
-
-        if (IsPlayerTurn)
+        if (turnPlayerController == playerController)
         {
-            Debug.Log("Player Turn");
-
-            if (playerController.Player.Hand.Count == 0)
-            {
-                DealCards();
-            }
+            turnPlayerController = computerController;
         }
         else
         {
-            Debug.Log("Computer Turn");
-
-            if (computerController.Player.Hand.Count == 0)
-            {
-                DealCards();
-            }
-
-            computerController.Play();
+            turnPlayerController = playerController;
         }
+    }
+
+    public void NextTurn()
+    {
+        NextPlayer();
+        Move++;
+
+        if (turnPlayerController.Player.Hand.IsEmpty)
+        {
+            DealCards();
+        }
+
+        turnPlayerController.MakeTurn();
     }
 
     public void DealCards()
@@ -159,7 +156,7 @@ public sealed class GameManager : MonoBehaviour
     public void PrintLog()
     {
         Debug.LogFormat("Round: {0} | Move: {1}", round, Move);
-        PileController.PrintLog();
+        pileController.PrintLog();
         playerController.PrintLog();
         computerController.PrintLog();
     }

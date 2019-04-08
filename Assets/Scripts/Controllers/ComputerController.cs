@@ -14,7 +14,7 @@ public sealed class ComputerController : PlayerControllerBase
 {
     private Computer computer;
 
-    public ComputerController(Computer computer, ComputerView computerView) : base(computer, computerView)
+    public ComputerController(Computer computer, ComputerView computerView, PileController pileController) : base(computer, computerView, pileController)
     {
         this.computer = computer;
     }
@@ -35,6 +35,12 @@ public sealed class ComputerController : PlayerControllerBase
         Vector2 position = pileController.PileView.FirstPile.transform.position;
         cardView.SetSprite(sprite);
         cardView.MoveTo(position);
+    }
+
+    public override void MakeTurn()
+    {
+        Debug.Log("Computer Turn");
+        Play();
     }
 
     public override void PrintLog()

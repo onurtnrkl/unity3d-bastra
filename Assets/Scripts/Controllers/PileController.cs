@@ -42,7 +42,7 @@ public sealed class PileController
 
         PileView.FirstPile.SetSprite(sprite);
 
-        Pile.AddCard(card);
+        Pile.Add(card);
 
         if (!PileView.FirstPile.gameObject.activeInHierarchy)
         {
@@ -70,7 +70,7 @@ public sealed class PileController
         }
         else
         {
-            Pile.AddCard(card);
+            Pile.Add(card);
             score = Pile.GetScore();
 
             SoundManager.Instance.PlaySingleClip(collectClip);

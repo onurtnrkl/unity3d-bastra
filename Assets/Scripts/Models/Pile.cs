@@ -27,20 +27,9 @@ public sealed class Pile : CardCollection
     //    return takenCards;
     //}
 
-    public void Clear()
-    {
-        cards.Clear();
-    }
-
     public Card TopCard()
     {
         return cards[Count - 1];
-    }
-
-    public bool IsEmpty()
-    {
-        if (cards.Count == 0) return true;
-        else return false;
     }
 
     public bool IsBastra(Card card)
@@ -58,7 +47,7 @@ public sealed class Pile : CardCollection
 
     public bool CanCollected(Card card)
     {
-        if (!IsEmpty())
+        if (!IsEmpty)
         {
             if (card.Rank == Rank.J) return true;
             else if (card.Rank == TopCard().Rank) return true;

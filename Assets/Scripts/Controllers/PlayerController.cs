@@ -12,9 +12,11 @@ using UnityEngine;
 
 public sealed class PlayerController : PlayerControllerBase
 {
-    public PlayerController(Player player, PlayerView playerView) : base(player, playerView)
-    {
+    private Player player;
 
+    public PlayerController(Player player, PlayerView playerView, PileController pileController) : base(player, playerView, pileController)
+    {
+        this.player = player;
     }
 
     public override void AddCard(Card card)
@@ -32,13 +34,19 @@ public sealed class PlayerController : PlayerControllerBase
 
     private void OnClicked(Card card)
     {
-        if (GameManager.Instance.IsPlayerTurn && !pileController.Pile.IsBusy)
+        if (player.CanPlay)
         {
+            player.CanPlay = false;
             CardView cardView = PlayerView.HandView[card];
-            pileController.Pile.IsBusy = true;
             Vector2 position = pileController.PileView.FirstPile.transform.position;
             cardView.MoveTo(position);
         }
+    }
+
+    public override void MakeTurn()
+    {
+        player.CanPlay = true;
+        Debug.Log("Player Turn");
     }
 
     public override void PrintLog()

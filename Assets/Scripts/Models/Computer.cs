@@ -8,7 +8,7 @@ Copyright (c) 2019 Onur Tanrikulu. All rights reserved.
 ================================================================*/
 #endregion
 
-public sealed class Computer : Player
+public sealed class Computer : PlayerBase
 {
     private Pile pile;
 
@@ -22,7 +22,7 @@ public sealed class Computer : Player
     /// </summary>
     public Card FindBestCard()
     {
-        if (!pile.IsEmpty())
+        if (!pile.IsEmpty)
         {
             Rank rank = pile.TopCard().Rank;
             int length = Hand.Count;
