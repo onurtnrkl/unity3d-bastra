@@ -72,10 +72,10 @@ public class CardView : MonoBehaviour, IMovable
         gameObject.SetActive(value);
     }
 
-    public void MoveTo(Vector2 position)
+    public void MoveTo(ITarget target)
     {
         layoutElement.ignoreLayout = true;
-        targetPosition = position;
+        targetPosition = target.Position;
         isMoving = true;
     }
 }

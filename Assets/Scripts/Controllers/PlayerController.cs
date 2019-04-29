@@ -38,8 +38,7 @@ public sealed class PlayerController : PlayerControllerBase
         {
             player.CanPlay = false;
             CardView cardView = PlayerView.HandView[card];
-            Vector2 position = pileController.PileView.FirstPile.transform.position;
-            cardView.MoveTo(position);
+            cardView.MoveTo(pileController.PileView);
         }
     }
 

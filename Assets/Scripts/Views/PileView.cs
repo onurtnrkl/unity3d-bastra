@@ -9,11 +9,19 @@
 
 using UnityEngine;
 
-public class PileView : MonoBehaviour
+public class PileView : MonoBehaviour, ITarget
 {
     public CardView FirstPile { get; private set; }
 
     public CardView SecondPile { get; private set; }
+
+    public Vector2 Position
+    {
+        get
+        {
+            return transform.position;
+        }
+    }
 
     private void Awake()
     {
